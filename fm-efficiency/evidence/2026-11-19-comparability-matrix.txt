@@ -1,0 +1,37 @@
+# 免训练扩上下文：可比性矩阵
+
+| 方法 | 载体 | base | 评测集 | 有数值 |
+|---|---|---|---|---|
+| LongLLaDA | arXiv:2506.14429 (AAAI 2026) | LLaDA-8B（Base / Instruct；对照 LLaMA3-8B） | LongBench (4k/8k) + RULER (4k/8k/16k) + NIAH | 是 |
+| MPPA | arXiv:2611.15029 | LLaDA-8B | 8192-token 困惑度 + passkey 检索 | 是 |
+| RangeSWA | arXiv:2610.42084 | ELF-B/M/L（连续扩散语言模型，非 LLaDA） | Gen.PPL (GPT-2 Large) + unigram entropy + 4-gram repetition，1k–8k | 是 |
+
+## 两两判定
+
+| 对 | 判定 | 原因 |
+|---|---|---|
+| LongLLaDA vs MPPA | NOT_COMPARABLE | base 不同（LLaDA-8B（Base / Instruct；对照 LLaMA3-8B） vs LLaDA-8B）; 评测集不同; 无共同指标 |
+| LongLLaDA vs RangeSWA | NOT_COMPARABLE | base 不同（LLaDA-8B（Base / Instruct；对照 LLaMA3-8B） vs ELF-B/M/L（连续扩散语言模型，非 LLaDA））; 评测集不同; 无共同指标 |
+| MPPA vs RangeSWA | NOT_COMPARABLE | base 不同（LLaDA-8B vs ELF-B/M/L（连续扩散语言模型，非 LLaDA））; 评测集不同; 无共同指标 |
+
+## 结论（脚本判定，非人工叙述）
+
+- 0/3 对可比。三条路线在现有公开载体上**无法放进同一张表**。
+- 因此 E1 的「同底物三方对表」在当前公开材料下是 NOT_ANSWERABLE：
+  不是没人写综述，而是没有任何两篇同时给出同 base、同评测、同指标的数。
+
+## 全文级核验结果（2026-11-19，已 curl 三篇 HTML 全文）
+
+| 方法 | 全文是否给 8192-token PPL 数值 |
+|---|---|
+| LongLLaDA (arXiv:2506.14429v3) | **否**。PPL 只作 Figure 1 曲线；正文 Table 1/2 给 LongBench 与 RULER 分数、NIAH 热力图，无可引用的 8192-token PPL 数字 |
+| MPPA (arXiv:2611.15029) | 是。8192-token PPL 19.51 → 3.12、passkey 100%（作者自报） |
+| RangeSWA (arXiv:2610.42084v1) | 是，但口径不同。Table 2 给 Gen.PPL（GPT-2 Large 打分）与 unigram entropy / 4-gram repetition，不是上下文外推 PPL |
+
+**结论修正**：此前「最小可推进动作 = 确认 LongLLaDA 正文是否有 8192-token PPL」
+已完成——全文核验为**否**。因此 LongLLaDA↔MPPA 这对也无法构成可比，
+E1 从 NOT_ANSWERABLE 升为 **CONFIRMED_NOT_ANSWERABLE（已穷举三篇全文）**：
+唯一可能打破僵局的第四篇必须同时报 LLaDA-8B + 8192-token PPL，公开材料里不存在。
+E1 的正确出路不是补测，而是改写为「同 base 下的**架构对照**」：
+把 LLaDA（离散扩散）与 ELF（连续扩散）在同一长文本生成任务上比 Gen.PPL + 重复率，
+这才是现有三篇真正共享的维度。

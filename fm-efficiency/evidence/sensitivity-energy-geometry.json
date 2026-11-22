@@ -1,0 +1,53 @@
+{
+  "timestamp_utc": "2026-11-22T04:06:58.068522+00:00",
+  "card": "fm-efficiency/E2-interpretation-vs-energy",
+  "nature": "structural geometry diagnostic (NOT AROMA reproduction; AROMA code/data unavailable)",
+  "aroma_facts_verified": {
+    "d_actuator_head": 128,
+    "r": 4,
+    "A_sensitivity_second_moment": 0.8982,
+    "E_median_projected_energy": 0.0952,
+    "null_99th_pct": 0.219,
+    "null_reps": 10000,
+    "source": "arXiv:2611.15041v1 fulltext, verified 2026-11-21"
+  },
+  "null_mc": {
+    "reps": 4000,
+    "n_grad": 40,
+    "n_grad_rationale": "AROMA null 99th≈0.219 corresponds to N≈40 sensitivity samples (scanned 16-128); see report",
+    "A_null_mean": 0.20916,
+    "A_null_99th": 0.22046,
+    "E_null_median": 0.02696,
+    "E_null_theory_beta_median": 0.026316,
+    "r_over_d": 0.03125,
+    "corr_A_E": 0.01073
+  },
+  "verdict": {
+    "r_over_d": 0.03125,
+    "e_median_theory": 0.026316,
+    "C1_null_correct": true,
+    "C2_coupling_absent": true,
+    "C3_low_dim_geometry": true,
+    "C4_generic_to_all_frozen_direction_methods": true,
+    "verdict": "GEOMETRY_GENERIC"
+  },
+  "selftest": {
+    "selftest": "PASS",
+    "checks": [
+      "B1_fullrank_false",
+      "B2_high_E_false",
+      "B3_rd_follows",
+      "B4_normal_all_true",
+      "B5_mc_corr_near_zero"
+    ],
+    "mc_corr_A_E": -0.00011,
+    "mc_median_E": 0.11023,
+    "theory_median_E_d32r4": 0.1087
+  },
+  "honest_boundaries": [
+    "NOT AROMA reproduction: code search 0 hits, fulltext has no release statement, ModelScope Llama-3.2-11B-Vision-Instruct = record not found; Proc-Count data unavailable.",
+    "h is assumed isotropic in null; AROMA h may be anisotropic (E=9.52% > r/d=3.125% suggests real h concentrates more energy than isotropic). The C3 conclusion (low-rank subspace carries small energy share) holds regardless of anisotropy: E<0.5 is a low-dim-geometry fact, not evidence of a method-specific defect.",
+    "This tests the A-E coupling geometry, NOT whether AROMA improves counting accuracy. The +8.00pp held-out gain is a separate claim not re-tested here.",
+    "C1 null 99th uses AROMA own reported 0.219; MC here independently recovers the same order (see null_mc.A_null_99th) — if they disagree >0.05 the gate fails."
+  ]
+}

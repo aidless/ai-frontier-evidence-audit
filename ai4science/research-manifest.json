@@ -1,0 +1,145 @@
+{
+  "schema": 2,
+  "project": {
+    "id": "ai4science",
+    "title": "AI for Science：自主发现系统的证据结构",
+    "domain": "ai/ai4science",
+    "created": "2026-11-19T14:05:43.000Z",
+    "status": "active"
+  },
+  "question": {
+    "text": "自主科学发现系统（AI scientist / self-driving lab）的产出，在多大比例上可被独立复现与同行评审接受？其瓶颈是假设生成、实验自动化还是验证？",
+    "updatedAt": "2026-11-19T15:50:00.000Z"
+  },
+  "hypotheses": [
+    {
+      "id": "H1",
+      "text": "当前 AI4S 高影响力案例中，「有论文且可复现」的比例显著低于「有新闻发布」的比例（证据结构失衡）。",
+      "status": "testing",
+      "experiments": [
+        "E1-evidence-tier-taxonomy"
+      ],
+      "reviews": [],
+      "updatedAt": "2026-11-19T15:50:00.000Z"
+    },
+    {
+      "id": "H2",
+      "text": "闭环自主实验室（如 MIT CRESt）的增益主要来自实验吞吐与贝叶斯优化，而非 LLM 的科学洞察。",
+      "status": "proposed",
+      "experiments": [],
+      "reviews": [],
+      "updatedAt": "2026-11-19T15:50:00.000Z"
+    },
+    {
+      "id": "H3",
+      "text": "「科学家效率提升 1.9×」是自我报告口径；真实加速需随机对照测量。",
+      "status": "not_identifiable_with_public_data",
+      "experiments": [
+        "E2-tool-selfreport-audit"
+      ],
+      "reviews": [],
+      "updatedAt": "2026-11-19T15:50:00.000Z",
+      "note": "E2 改做公开数字内部一致性诊断：1.9× 与 5 个公开分项在同口径平均下不相容；配对实测偏离的方向/幅度因无配对无方差数学上不可识别。"
+    }
+  ],
+  "loop": {
+    "phase": "analysis",
+    "iteration": 3,
+    "history": [
+      {
+        "iteration": 0,
+        "phase": "scoping",
+        "action": "init",
+        "detail": "自主科学发现系统（AI scientist / self-driving lab）的产出，在多大比例上可被独立复现与同行评审接受？其瓶颈是假设生成、实验自动化还是验证？",
+        "at": "2026-11-19T14:05:43.000Z"
+      },
+      {
+        "iteration": 0,
+        "phase": "scoping",
+        "action": "add-first-experiments",
+        "detail": "added 2 planned experiments from evidence baseline v1",
+        "at": "2026-11-19T14:12:25.000Z"
+      },
+      {
+        "iteration": 1,
+        "phase": "analysis",
+        "action": "e1-complete-and-gate",
+        "detail": "E1 落地：33 条记录三维标注（A1=2/A2=24/A3=2/A4=5，B1=3/B2=17/B3=13，ANNOUNCEMENT_ONLY=13/PERF_EVIDENCE=20），composite 由几何平均脚本算出可复算（重跑 diff=0）；补 lint 反证：ANNOUNCEMENT_ONLY 记录被写成断言语气 → exit 1（真实报告 0 违规不误报）。",
+        "at": "2026-11-19T15:50:00.000Z"
+      },
+      {
+        "iteration": 2,
+        "phase": "analysis",
+        "action": "e2-selfreport-block",
+        "detail": "E1 已完成并过门；E2 因只有自报口径、无配对原始数据判阻塞。",
+        "at": "2026-11-19T16:05:00.000Z"
+      },
+      {
+        "iteration": 3,
+        "phase": "analysis",
+        "action": "e2-selfreport-consistency-diagnostic",
+        "detail": "E2 由 blocked 转为 completed（公开数字一致性诊断，非配对实测）：1.9 与5公开分项同口径平均彻底不相容，偏离方向/幅度不可识别。产物 evidence/selfreport-1p9x-consistency.json + 2026-11-21-selfreport-1p9x-consistency.md。",
+        "at": "2026-11-21T08:00:00.000Z"
+      }
+    ]
+  },
+  "experiments": [
+    {
+      "id": "E1-evidence-tier-taxonomy",
+      "title": "六方向 AI4S 成果的证据等级分类学：一级载体 / 数字口径 / 可复算性三维标注",
+      "hypothesis": "H1",
+      "status": "completed",
+      "created": "2026-11-19T14:12:25.000Z",
+      "updatedAt": "2026-11-19T15:50:00.000Z",
+      "artifacts": [
+        "ai4science/analyses/build_evidence_tiers.py",
+        "ai4science/evidence/tier-taxonomy.jsonl",
+        "ai4science/evidence/2026-11-19-tier-report.md"
+      ],
+      "verdict": "33 条中 20 条 PERF_EVIDENCE、13 条 ANNOUNCEMENT_ONLY；AI4S 方向 6 条里仅 2 条可作性能证据（4/6 只能写'宣布'），部分支撑 H1。编号/数字复算 diff=0；引用门 selftest 3 项（含断言式引用必红）。",
+      "reviews": []
+    },
+    {
+      "id": "E2-tool-selfreport-audit",
+      "title": "「1.9×」类自我报告效率与配对实测的差距：同任务有/无工具的对照设计",
+      "hypothesis": "H3",
+      "status": "completed",
+      "created": "2026-11-19T14:12:25.000Z",
+      "updatedAt": "2026-11-21T08:00:00.000Z",
+      "reviews": [],
+      "verdict": "内部一致性诊断完成（非配对实测）：1.9 与公开 5 分项同口径平均不相容（均值2.142/中位2.05/几何2.112 均≠1.9；隐含未公开3项1.497<最低1.76；可行区间[1.999,2.400]不含1.9）。偏离方向与幅度因无配对无方差不可识别。H3 not_identifiable_with_public_data。",
+      "artifacts": [
+        "ai4science/evidence/selfreport-1p9x-consistency.json",
+        "ai4science/evidence/2026-11-21-selfreport-1p9x-consistency.md"
+      ]
+    }
+  ],
+  "artifacts": [
+    {
+      "name": "evidence-baseline",
+      "latestVersion": "v1",
+      "updatedAt": "2026-11-19T14:05:43.000Z",
+      "description": "AI4S 证据结构基线（论文/通稿/自报三分），见 evidence/2026-11-19-baseline.md"
+    },
+    {
+      "name": "evidence-tier-taxonomy",
+      "latestVersion": "v1",
+      "updatedAt": "2026-11-19T15:50:00.000Z",
+      "description": "三维证据等级分类学（33 条）+ 可复算 composite + 引用语气 lint 门，见 analyses/build_evidence_tiers.py 与 evidence/tier-report.md"
+    },
+    {
+      "name": "manuscript-draft",
+      "latestVersion": "v1",
+      "updatedAt": "2026-11-20T03:12:50.000Z",
+      "description": "证据驱动技术报告初稿（6 份 draft.md 之一），见 manuscript/draft.md"
+    },
+    {
+      "name": "selfreport-1p9x-consistency",
+      "latestVersion": "v1",
+      "updatedAt": "2026-11-21T08:00:00.000Z",
+      "description": "1.9× 自我报告内部一致性诊断：与公开5分项不相容、偏离不可识别，见 analyses/selfreport_1p9x_consistency.py 与 evidence/2026-11-21-selfreport-1p9x-consistency.md"
+    }
+  ],
+  "reviews": [],
+  "updatedAt": "2026-11-21T08:00:00.000Z"
+}

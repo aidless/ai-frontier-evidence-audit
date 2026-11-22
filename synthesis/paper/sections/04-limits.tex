@@ -1,0 +1,51 @@
+\section{Limits and Citation Discipline}
+\label{sec:limits}
+
+\paragraph{Code/data/weight availability.} The full texts of CF-WAM, AROMA,
+Termination Lag, and Agentic-OPD were retrieved and checked; none releases code
+or data at the time of writing (CF-WAM promises release ``upon acceptance'').
+Numbers attributed to those methods are therefore author-reported and cannot be
+independently reproduced. The GR00T2 / world-action-model weights were likewise
+not released: the NVIDIA/Isaac-GR00T repository's latest tag at check time was
+n1.7 (2026-04-18), with no GR00T2/N2/WAM artifact. We deliberately do not build
+unfaithful proxies that would masquerade as reproductions; where we used a
+synthetic or null-model apparatus, we say so on the same line as the result.
+
+\paragraph{Compute and substrate.} Some diagnostics used a borrowed AMD Radeon
+Cloud instance (gfx1100, 48GiB shared) for the synthetic three-arm, multi-view,
+and DoM-probe experiments; the rest are pure numpy/standard-library computations
+that need no accelerator. Each diagnostic reports its own substrate. This paper
+is a methodological audit, not a claim of large-scale reproduction, and the
+apparatus scale of each diagnostic bounds the generality of its verdict.
+
+\paragraph{Evidence grading is not truth judgment.} \texttt{ANNOUNCEMENT\_ONLY}
+means the current public material does not permit independent recomputation; it
+does not assert the result is wrong. Likewise ``not identifiable'' and
+``cannot judge'' are statements about the information content of the available
+data, not about the underlying phenomenon.
+
+\paragraph{Caliber discipline.} Every arXiv identifier cited here was checked for
+number--title agreement against the abstract page and is recorded as VERIFIED in
+the project ledger (37 identifiers). All reported percentages are re-derivable
+from the corresponding \texttt{evidence/} artifacts. Vendor-reported quantities
+(protocol download counts, the 1.9x figure, GeneScientist and NanoTitan numbers)
+are explicitly marked as self-reported. Three recalibrations matter for reading
+the numbers: RoboBuilder's 66\% is a sim-pass-to-real-pass \emph{reproduction
+rate}, not a correlation coefficient; the 3.1\% and $-$7.9\% figures in the
+reward-hacking monitoring paper belong to two different models; and any 0.66
+citation must name its ruler (reproduction rate vs Jaccard vs AUC vs
+correlation).
+
+\paragraph{Reads we do not recommend.} Do not sort the 9.3x independently
+recomputable cost-performance ratio beside the 1.9x self-reported time ratio; do
+not tabulate the 66\% sim-to-real reproduction rate with the 92.1\% true-robot
+success rate; and do not directly compare the long-context PPL numbers of the
+three training-free extension routes, which use different bases and different
+evaluation protocols.
+
+\paragraph{Reproducibility.} The eight diagnostics, their self-tests, their
+landed JSON/text evidence, and the evidence-verification ledger live in the
+project tree alongside this manuscript. Every verdict in Table~\ref{tab:eight}
+carries the command that reproduces it; the counter-evidence self-tests are part
+of the delivered scripts, so a reader can re-run the red cases as well as the
+green ones.

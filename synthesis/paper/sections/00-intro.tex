@@ -1,0 +1,38 @@
+\section{Introduction: Naming the Shift, Auditing the Evidence}
+\label{sec:intro}
+
+``From predicting words to predicting world states'' is a popular summary of where
+2026 AI research is concentrating. The academic term is \emph{next-state
+prediction} (NSP). Two things follow once we check the underlying claims rather
+than the framing. First, NSP is not a single invention but a continuation of a
+line running from at least 2018~\cite{worldmodels2018} to late-2026 world-action
+models~\cite{wam2026}. Second, treating NSP as a unified objective that
+\emph{replaces} next-token prediction has, at the time of writing, no
+fixed-backbone three-arm comparison behind it, and there is direct evidence that
+state tracking is a distributed by-product of next-token
+heads~\cite{statelaws2025}. This paper is organized around that gap: separating
+the narrative from the evidence.
+
+The broader motivation is that the six directions---world models, agents, embodied
+and physical AI, AI for science, trustworthy AI, and foundation-model
+engineering---are frequently narrated as one synchronized surge. A claim audit
+quickly shows that the individual results are real but of \emph{unequal evidence
+grade}: some are recomputable, many are author-reported with no released
+substrate, and a few are internally inconsistent with their own public numbers.
+Our contribution is to make the audit \emph{operational} rather than rhetorical.
+We design eight diagnostics, each with a pre-registered criterion, a concrete
+apparatus (a three-arm controlled comparison, an a-priori power calculation, an
+arithmetic self-check, a null-model geometry computation, or a stratified
+re-computation of published aggregates), and a set of counter-evidence self-tests
+that prove the apparatus can produce a red verdict and that we can catch it.
+
+We state the headline up front. Across the eight diagnostics, \emph{the scope of
+each conclusion is fixed by the apparatus and its reporting caliber, not by model
+scale}. This is the single most portable lesson in the paper, and the rest is
+its demonstration. Four diagnostics return a directly citable verdict (Section
+\ref{sec:diagnostics}); four return a quantitative statement about what can and
+cannot be concluded from public material alone, which we treat as a result rather
+than a gap. Section~\ref{sec:scope} states the common methodological skeleton and
+the evidence taxonomy that motivates the whole exercise; Section~\ref{sec:lessons}
+distills the reusable lessons; Section~\ref{sec:limits} states limits and citation
+discipline.

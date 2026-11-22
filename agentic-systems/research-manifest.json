@@ -1,0 +1,168 @@
+{
+  "schema": 2,
+  "project": {
+    "id": "agentic-systems",
+    "title": "智能体系统：协同、协议与可审计失败",
+    "domain": "ai/agents",
+    "created": "2026-11-19T14:05:43.000Z",
+    "status": "active"
+  },
+  "question": {
+    "text": "多智能体系统的性能上限由「模型能力」还是「工作流组织 / 协议 / 验证」决定？在什么条件下多 agent 优于单 agent，其失败模式如何被结构性审计与量化？",
+    "updatedAt": "2026-11-19T14:05:43.000Z"
+  },
+  "hypotheses": [
+    {
+      "id": "H1",
+      "text": "固定执行模型时，工作流组织（谁编写流程、如何委派、委派粒度）是可量化的性能决定因素（WorkflowArena 方向）。",
+      "status": "not_answerable_with_public_substrate",
+      "experiments": [
+        "E2-workflow-author-effect"
+      ],
+      "reviews": [],
+      "updatedAt": "2026-11-19T14:12:25.000Z",
+      "note": "E2 改做可判定性审计：WorkflowArena 底物不可得且每配置每任务仅单次评测无方差，原判据不可判读；MDE 审计给出门槛而非效应观测。"
+    },
+    {
+      "id": "H2",
+      "text": "多 agent 失败主要来自系统设计与 agent 间失配，而非单模型能力（MAST 14 类失败模式）。",
+      "status": "partial_support_synthetic",
+      "experiments": [
+        "E1-termination-lag-intervention"
+      ],
+      "reviews": [],
+      "updatedAt": "2026-11-21T05:16:00.000Z"
+    },
+    {
+      "id": "H3",
+      "text": "评估侧「部分可观测」是智能体欺骗的结构性根源；把监控器纳入博弈（e-PoG）可在不完美 verifier 下保持忠实。",
+      "status": "proposed",
+      "experiments": [],
+      "reviews": [],
+      "updatedAt": "2026-11-19T14:05:43.000Z"
+    },
+    {
+      "id": "H4",
+      "text": "RL 训练的能力遗忘可通过被丢弃 checkpoint 的 on-policy 蒸馏恢复（Agentic-OPD）。",
+      "status": "proposed",
+      "experiments": [],
+      "reviews": [],
+      "updatedAt": "2026-11-19T14:05:43.000Z"
+    }
+  ],
+  "loop": {
+    "phase": "analysis",
+    "iteration": 3,
+    "history": [
+      {
+        "iteration": 0,
+        "phase": "scoping",
+        "action": "init",
+        "detail": "多智能体系统的性能上限由「模型能力」还是「工作流组织 / 协议 / 验证」决定？在什么条件下多 agent 优于单 agent，其失败模式如何被结构性审计与量化？",
+        "at": "2026-11-19T14:05:43.000Z"
+      },
+      {
+        "iteration": 0,
+        "phase": "scoping",
+        "action": "add-first-experiments",
+        "detail": "added 2 planned experiments from evidence baseline v1",
+        "at": "2026-11-19T14:12:25.000Z"
+      },
+      {
+        "iteration": 1,
+        "phase": "analysis",
+        "action": "e2-substrate-probe",
+        "detail": "WorkflowArena 代码/数据不可得，两条 Limitations 逐字存档；E1/E2 均判 BLOCKED，重述为可判据问题。",
+        "at": "2026-11-19T16:05:00.000Z"
+      },
+      {
+        "iteration": 1,
+        "phase": "analysis",
+        "action": "fulltext-deepdive",
+        "detail": "E1 翻案 METHOD_UNBLOCKED_SUBSTRATE_PENDING：oracle 离线重算无需 API/GPU；E2 维持 BLOCKED。产物 manuscript/fulltext-deepdive.md。",
+        "at": "2026-11-20T12:30:00.000Z"
+      },
+      {
+        "iteration": 2,
+        "phase": "synthesis",
+        "action": "e1-synthetic-early-exit-diagnosis",
+        "detail": "E1 合成轨迹方法学诊断完成（非 SWE-bench 真跑）：校准撤销3.05%、oracle省步70.4%、在线检测器仅FPR=0有效、FPR≥0.01成功率崩盘；命题「早停成败由FPR主导非召回率」成立。H2 partial_support_synthetic。产物 evidence/termination-lag-full.json + 2026-11-21-termination-lag-intervention.md。",
+        "at": "2026-11-21T05:16:00.000Z"
+      },
+      {
+        "iteration": 3,
+        "phase": "analysis",
+        "action": "e2-workflow-detectability-audit",
+        "detail": "E2 由 blocked 转为 completed（可判定性审计，非数值复现）：预注册 MDE + 灵敏度曲线，SESOI 不可得改报门槛。主效应 MDE dz0.234、交互 d0.468(2×)、Type I 0.045、power@MDE 0.7996。H1 not_answerable_with_public_substrate。产物 evidence/workflow-author-detectability.json + 2026-11-21-workflow-author-detectability.md。",
+        "at": "2026-11-21T08:00:00.000Z"
+      }
+    ]
+  },
+  "experiments": [
+    {
+      "id": "E1-termination-lag-intervention",
+      "title": "终止延迟干预：对同一批任务加「首次正确 patch 后强制退出」scaffold，统计撤销率与步骤数",
+      "hypothesis": "H2",
+      "status": "completed",
+      "created": "2026-11-19T14:12:25.000Z",
+      "updatedAt": "2026-11-21T05:16:00.000Z",
+      "reviews": [],
+      "verdict": "合成轨迹方法学诊断完成（非 SWE-bench 真跑）：校准 baseline 撤销率 3.05%（落论文 1-8%），oracle 上界省步 70.4% 且撤销归零；在线 detector 仅 FPR=0 有效，FPR≥0.01 成功率从 96.95% 崩至 94.35%→62.94%。命题「有效性由 FPR 主导而非召回率」成立；fpr_dominates=true。非论文数值复现。",
+      "blocker": "原始底物（逐-step patch 轨迹）作者未放出；本诊断为等价合成轨迹方法学验证，不冒充 SWE-bench 结果。",
+      "evidence": "evidence/2026-11-21-termination-lag-intervention.md",
+      "artifacts": [
+        "agentic-systems/evidence/termination-lag-full.json",
+        "agentic-systems/evidence/2026-11-21-termination-lag-intervention.md"
+      ]
+    },
+    {
+      "id": "E2-workflow-author-effect",
+      "title": "WorkflowArena 子集：固定执行者，只换工作流编写者，量化工作流组织净增益",
+      "hypothesis": "H1",
+      "status": "completed",
+      "created": "2026-11-19T14:12:25.000Z",
+      "updatedAt": "2026-11-21T08:00:00.000Z",
+      "reviews": [],
+      "verdict": "可判定性审计完成（非 WF Arena 复现）：145 任务主效应 MDE=dz 0.234、难度交互 MDE=d 0.468（主效应2×）、MC Type I=0.045 与 α=0.05 相容。底物不可得→原判据不可判读；需重复评测或扩≥199任务才判得开。H1 not_answerable_with_public_substrate。",
+      "artifacts": [
+        "agentic-systems/experiments/E2-workflow-author-effect/availability.md",
+        "agentic-systems/evidence/workflow-author-detectability.json",
+        "agentic-systems/evidence/2026-11-21-workflow-author-detectability.md"
+      ]
+    }
+  ],
+  "artifacts": [
+    {
+      "name": "evidence-baseline",
+      "latestVersion": "v1",
+      "updatedAt": "2026-11-19T14:05:43.000Z",
+      "description": "智能体方向证据基线（协议、基准、蒸馏、终止延迟、欺骗），见 evidence/2026-11-19-baseline.md"
+    },
+    {
+      "name": "manuscript-draft",
+      "latestVersion": "v1",
+      "updatedAt": "2026-11-20T03:12:50.000Z",
+      "description": "证据驱动技术报告初稿（6 份 draft.md 之一），见 manuscript/draft.md"
+    },
+    {
+      "name": "workflowarena-availability",
+      "latestVersion": "v1",
+      "updatedAt": "2026-11-20T03:13:25.000Z",
+      "description": "WorkflowArena 底物探测，见 experiments/E2-workflow-author-effect/availability.md"
+    },
+    {
+      "name": "termination-lag-intervention",
+      "latestVersion": "v1",
+      "updatedAt": "2026-11-21T05:16:00.000Z",
+      "description": "E1 终止延迟早停合成诊断（FPR 主导命题），见 evidence/2026-11-21-termination-lag-intervention.md"
+    },
+    {
+      "name": "workflow-author-detectability",
+      "latestVersion": "v1",
+      "updatedAt": "2026-11-21T08:00:00.000Z",
+      "description": "E2 可判定性审计（非复现）：145任务主效应MDE dz0.234、难度交互d0.468、MC Type I 0.045，见 analyses/workflow_author_detectability.py 与 evidence/2026-11-21-workflow-author-detectability.md"
+    }
+  ],
+  "reviews": [],
+  "updatedAt": "2026-11-21T08:00:00.000Z"
+}

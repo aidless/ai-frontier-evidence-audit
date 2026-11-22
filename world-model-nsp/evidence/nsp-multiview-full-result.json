@@ -1,0 +1,90 @@
+{
+  "cfg": {
+    "seed": 23,
+    "eval_seed": 923,
+    "ds": 12,
+    "view_dim": 3,
+    "K": 6,
+    "dm": 64,
+    "layers": 2,
+    "heads": 4,
+    "n_traj": 512,
+    "T": 80,
+    "steps": 800,
+    "batch": 128,
+    "seeds": 3,
+    "n_eval": 32,
+    "rho": 0.9,
+    "perturb_eps": 0.3,
+    "lr": 0.002
+  },
+  "device": "AMD Radeon Graphics",
+  "elapsed_s": 18.91,
+  "per_seed": [
+    {
+      "seed": 0,
+      "single": {
+        "in_dist_mse": 0.009887,
+        "cross_emb_mse": 0.083147,
+        "degradation_ratio": 8.41,
+        "n_params": 68748
+      },
+      "multi": {
+        "in_dist_mse": 0.008589,
+        "cross_emb_mse": 0.024176,
+        "degradation_ratio": 2.815,
+        "n_params": 68748
+      }
+    },
+    {
+      "seed": 1,
+      "single": {
+        "in_dist_mse": 0.008276,
+        "cross_emb_mse": 0.075076,
+        "degradation_ratio": 9.072,
+        "n_params": 68748
+      },
+      "multi": {
+        "in_dist_mse": 0.007846,
+        "cross_emb_mse": 0.025048,
+        "degradation_ratio": 3.192,
+        "n_params": 68748
+      }
+    },
+    {
+      "seed": 2,
+      "single": {
+        "in_dist_mse": 0.009247,
+        "cross_emb_mse": 0.074163,
+        "degradation_ratio": 8.02,
+        "n_params": 68748
+      },
+      "multi": {
+        "in_dist_mse": 0.007994,
+        "cross_emb_mse": 0.024614,
+        "degradation_ratio": 3.079,
+        "n_params": 68748
+      }
+    }
+  ],
+  "aggregate": {
+    "single": {
+      "in_dist_mse": 0.009137,
+      "cross_emb_mse": 0.077462,
+      "degradation_ratio": 8.500667,
+      "degradation_std": 0.434236,
+      "n_params": 68748
+    },
+    "multi": {
+      "in_dist_mse": 0.008143,
+      "cross_emb_mse": 0.024613,
+      "degradation_ratio": 3.028667,
+      "degradation_std": 0.157971,
+      "n_params": 68748
+    }
+  },
+  "verdict": {
+    "q1_multi_better_indist": true,
+    "q2_multi_more_robust": true
+  }
+}

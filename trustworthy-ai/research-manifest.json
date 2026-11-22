@@ -1,0 +1,167 @@
+{
+  "schema": 2,
+  "project": {
+    "id": "trustworthy-ai",
+    "title": "可信 AI：聚合指标掩盖与内部激活审计",
+    "domain": "ai/trust-safety",
+    "created": "2026-11-19T14:05:43.000Z",
+    "status": "active"
+  },
+  "question": {
+    "text": "部署级可信 AI 的关键失败是「模型能力不足」还是「评估口径掩盖」？内部激活监控能否成为可部署的通用审计层？",
+    "updatedAt": "2026-11-19T14:05:43.000Z"
+  },
+  "hypotheses": [
+    {
+      "id": "H1",
+      "text": "聚合指标系统性掩盖局部/子群失败（医疗 VLM 在气胸阳性片上零检出而聚合准确率正常）。",
+      "status": "proposed",
+      "experiments": [
+        "E1-aggregate-masking-curve"
+      ],
+      "reviews": [],
+      "updatedAt": "2026-11-19T14:12:25.000Z"
+    },
+    {
+      "id": "H2",
+      "text": "reward hacking 可由内部表征（DoM 向量 / going-badly 方向）近零成本检测，且跨模型可迁移。",
+      "status": "not_supported_mixed_negative",
+      "experiments": [
+        "E2-activation-probe-transfer"
+      ],
+      "reviews": [],
+      "updatedAt": "2026-11-21T11:47:56.385434+00:00"
+    },
+    {
+      "id": "H3",
+      "text": "欺骗的结构性根源在评估侧部分可观测；把监控器纳入博弈（e-PoG）可在不完美 verifier 下保持忠实。",
+      "status": "proposed",
+      "experiments": [],
+      "reviews": [],
+      "updatedAt": "2026-11-19T14:05:43.000Z"
+    }
+  ],
+  "loop": {
+    "phase": "analysis",
+    "iteration": 4,
+    "history": [
+      {
+        "iteration": 0,
+        "phase": "scoping",
+        "action": "init",
+        "detail": "部署级可信 AI 的关键失败是「模型能力不足」还是「评估口径掩盖」？内部激活监控能否成为可部署的通用审计层？",
+        "at": "2026-11-19T14:05:43.000Z"
+      },
+      {
+        "iteration": 0,
+        "phase": "scoping",
+        "action": "add-first-experiments",
+        "detail": "added 2 planned experiments from evidence baseline v1",
+        "at": "2026-11-19T14:12:25.000Z"
+      },
+      {
+        "iteration": 1,
+        "phase": "analysis",
+        "action": "e1-identity-complete",
+        "detail": "掩盖恒等式与模拟对表通过；selftest 两处修正（tol 1e-9→1e-5、反证 r=1.0 改 0.8 vs 0.5）；删除与自身表格矛盾的 <12pp 断言，改为待验断言。",
+        "at": "2026-11-19T16:05:00.000Z"
+      },
+      {
+        "iteration": 2,
+        "phase": "analysis",
+        "action": "e1-point-estimate-from-fulltext",
+        "detail": "取 arXiv:2611.14975v1 全文（curl HTML 200/188992B）实测设计常量，把掩盖区间收缩为点估计 2.69–4.79pp；Table2 逐字气胸召回 0/0/0.377/0.671、Table1 聚合 acc 0.698/0.620/0.534/0.518。masking_point_estimate.py selftest 4 项通过。",
+        "at": "2026-11-20T01:57:37.000Z"
+      },
+      {
+        "iteration": 3,
+        "phase": "analysis",
+        "action": "gpu-smoke-verdict-update",
+        "detail": "2026-11-20 实测本机 RTX 3060 Laptop 6GB CUDA 可用（bf16 19.76 TFLOPS），被 ollama 常驻占用后仅剩 ~1GB；4 张 GPU 型卡 verdict 更新为\"显存不足不可行/需腾显存或云 GPU\"。证据：trustworthy-ai/evidence/2026-11-20-gpu-smoke.txt",
+        "at": "2026-11-20T02:35:00.000Z"
+      },
+      {
+        "at": "2026-11-21T11:47:56.385434+00:00",
+        "event": "e2-cloud-dom-probe",
+        "detail": "real-model DoM probe on Qwen2.5-7B/14B-base, cloud gfx1100; within-model unseen-family generalization on 7B, validator failure on 14B; cross-model NOT_ANSWERABLE"
+      }
+    ]
+  },
+  "experiments": [
+    {
+      "id": "E1-aggregate-masking-curve",
+      "title": "从 CRESt 式聚合准确率到局部灾难率：绘制聚合分 → 子群零检出的掩盖曲线",
+      "hypothesis": "H1",
+      "status": "completed",
+      "created": "2026-11-19T14:12:25.000Z",
+      "updatedAt": "2026-11-20T01:57:37.000Z",
+      "reviews": [],
+      "verdict": "区间→点估计：取 arXiv:2611.14975 全文 §3.1+Table1/2，实测 prevalence-matched 设计 7 findings×(432阳+432阴)=6048，f=864/6048=1/7、p=432/864=1/2、f·p=432/6048。气胸召回 0 vs 对照 0.377/0.671 → 单一 finding 完全失败的聚合 acc 代价 = 2.69–4.79pp（原区间 2.14–32.14pp 因 f/p 设得过宽而收紧）。selftest 4 项通过（设计自洽/f·p 双路径/零 r 归零/错 f 可判别）。诚实边界：修复气胸后 acc 只到 0.582 仍远低于 MedGemma 0.698，整体落后是系统性。",
+      "artifacts": [
+        "trustworthy-ai/analyses/masking_identity.py",
+        "trustworthy-ai/analyses/masking_point_estimate.py",
+        "trustworthy-ai/evidence/2026-11-19-masking-identity.txt",
+        "trustworthy-ai/evidence/2026-11-19-masking-point-estimate.txt"
+      ]
+    },
+    {
+      "id": "E2-activation-probe-transfer",
+      "title": "reward hacking 激活探针（DoM）跨模型族迁移测试，报匹配 FPR 下漏报/误报权衡",
+      "hypothesis": "H2",
+      "status": "completed",
+      "created": "2026-11-19T14:12:25.000Z",
+      "updatedAt": "2026-11-21T11:47:56.385434+00:00",
+      "reviews": [],
+      "verdict": "MIXED_NEGATIVE: 7B Q1/Q2 pass but shortcut margin thin(0.242); 14B Q1 fail(validator TPR=0) Q2 fail(0.10); Q3 NOT_ANSWERABLE (hidden dim differs); NOT a cross-family reproduction",
+      "artifacts": [
+        "trustworthy-ai/evidence/2026-11-20-gpu-smoke.txt"
+      ]
+    }
+  ],
+  "artifacts": [
+    {
+      "name": "evidence-baseline",
+      "latestVersion": "v1",
+      "updatedAt": "2026-11-19T14:05:43.000Z",
+      "description": "可信 AI 证据基线（局部失败、内部激活、欺骗三块），见 evidence/2026-11-19-baseline.md"
+    },
+    {
+      "name": "manuscript-draft",
+      "latestVersion": "v1",
+      "updatedAt": "2026-11-20T03:12:50.000Z",
+      "description": "证据驱动技术报告初稿（6 份 draft.md 之一），见 manuscript/draft.md"
+    },
+    {
+      "name": "masking-point-estimate",
+      "latestVersion": "v1",
+      "updatedAt": "2026-11-20T03:13:25.000Z",
+      "description": "聚合掩盖恒等式点估计，见 evidence/2026-11-19-masking-point-estimate.txt"
+    },
+    {
+      "name": "dom-probe-7b",
+      "latestVersion": 1,
+      "updatedAt": "2026-11-21T11:47:56.385434+00:00",
+      "description": "E2 full 7B raw"
+    },
+    {
+      "name": "dom-probe-14b",
+      "latestVersion": 1,
+      "updatedAt": "2026-11-21T11:47:56.385434+00:00",
+      "description": "E2 full 14B raw"
+    },
+    {
+      "name": "dom-analysis",
+      "latestVersion": 1,
+      "updatedAt": "2026-11-21T11:47:56.385434+00:00",
+      "description": "E2 verdict"
+    },
+    {
+      "name": "dom-probe-report",
+      "latestVersion": 1,
+      "updatedAt": "2026-11-21T11:47:56.385434+00:00",
+      "description": "E2 result report md"
+    }
+  ],
+  "reviews": [],
+  "updatedAt": "2026-11-21T11:47:56.385434+00:00"
+}

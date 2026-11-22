@@ -1,0 +1,74 @@
+\documentclass[10pt]{article}
+
+\usepackage[preprint]{tmlr}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{hyperref}
+\usepackage{url}
+\usepackage{booktabs}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{microtype}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{underscore}
+\usepackage{longtable}
+
+\title{Evidence, Not Enrollment: Eight Recomputable Methodological\\ Diagnostics on 2026 AI Frontier Claims}
+
+\author{%
+  Anonymous Author(s) \\
+  Affiliation \\
+  Address \\
+  \texttt{email}
+}
+
+\def\month{MM}
+\def\year{YYYY}
+\def\openreview{\url{https://openreview.net/forum?id=XXXX}}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+The 2026 discussion of AI research fronts---world models, agents, embodied and
+physical AI, AI for science, trustworthy AI, and foundation-model engineering---
+often presents six directions as one synchronous wave of progress. We audit the
+claims behind each direction and find that none of the six is wrong; the error is
+placing results of \emph{different evidence grades} in the same table. We make the
+audit operational with eight \emph{recomputable} methodological diagnostics---each
+built to a pre-registered criterion, carried out as a three-arm comparison, a
+statistical-power calculation, an arithmetic self-consistency check, a null-model
+geometry computation, or a stratified re-computation of published aggregates, and
+each equipped with counter-evidence self-tests that prove the apparatus can fail
+and still be caught. The diagnostics deliberately target ``substrate
+unavailable'' cards: when the code, weights, or per-trial logs of a method are not
+released, we convert ``cannot test'' into a quantitative statement about what
+conditions would make it testable, whether the published numbers are themselves
+inconsistent, whether a reported paradox is the arithmetic of a low-rank subspace,
+or whether an aggregate mean is driven by a few scenarios. Four diagnostics return
+a directly citable verdict: an action-conditioned next-state predictor has the
+lowest \emph{absolute} long-horizon error (0.0024) even though the
+``lowest-slope'' criterion fails against a quantization floor; multi-view
+projection degrades 3.03x under cross-embodiment perturbation versus 8.50x for a
+single view; early-stopping success is governed by the detector's false-positive
+rate, collapsing once FPR reaches 0.01; and an aggregate success rate of 92.1\%
+is a flat result across eight scenarios, not a mean inflated by a few strong ones
+(leave-one-out spread 2.38pp, chi-square p = 0.40). Across all eight, the scope of
+a conclusion is fixed by the apparatus and reporting caliber, not by model scale.
+Our reproducible lesson: every criterion must carry its own counter-evidence, and
+unavailability is not the same as un-informative.
+\end{abstract}
+
+\input{sections/00-intro.tex}
+\input{sections/01-scope.tex}
+\input{sections/02-diagnostics.tex}
+\input{sections/03-lessons.tex}
+\input{sections/04-limits.tex}
+
+\begin{thebibliography}{9}
+\input{sections/refs.tex}
+\end{thebibliography}
+
+\end{document}

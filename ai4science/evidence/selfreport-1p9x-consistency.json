@@ -1,0 +1,58 @@
+{
+  "experiment": "ai4science/E2-tool-selfreport-audit/consistency-diagnostic",
+  "generated_at": "2026-11-21T15:54:42+00:00",
+  "nature": "arithmetic consistency + identifiability diagnostic; NOT a paired human-subject measurement",
+  "source": "ai4science/evidence/2026-11-19-baseline.md:25 (OpenAI report 2026-11-16)",
+  "design_criterion": "自我报告 1.9× 与配对实测的偏离方向与幅度（判据原文）",
+  "what_is_demonstrable": "公开数字的内部一致性 + 偏离的可识别性；配对实测的底物（人类受试者+任务日志）不可用，本诊断不冒充配对效应量。",
+  "consistency": {
+    "checks": {
+      "headline_not_equal_published_mean": true,
+      "implied_missing_below_published_min": true,
+      "headline_outside_feasible_range": true,
+      "no_common_aggregator_matches": true
+    },
+    "all_checks_pass": true,
+    "published_n": 5,
+    "published_values": {
+      "code": 2.83,
+      "reading": 2.21,
+      "analysis": 2.05,
+      "ideation": 1.86,
+      "writing": 1.76
+    },
+    "published_sum": 10.71,
+    "published_mean": 2.1420000000000003,
+    "published_median": 2.05,
+    "published_geomean": 2.11150267744746,
+    "published_min": 1.76,
+    "published_max": 2.83,
+    "n_categories_claimed": 8,
+    "n_missing": 3,
+    "headline": 1.9,
+    "implied_unpublished_mean": 1.4966666666666661,
+    "feasible_mean_range_if_missing_in_published_range": [
+      1.9987500000000002,
+      2.4000000000000004
+    ],
+    "aggregation_reproducible_from_public_numbers": false,
+    "interpretation": "1.9x is below the arithmetic mean (2.142), the median (2.05) and the geometric mean (2.112) of the five published subitems. Reproducing 1.9 as an 8-item arithmetic mean would require the three unpublished items to average 1.497, below every published subitem; indeed 1.9 lies outside the entire feasible mean range [1.999, 2.400] obtainable even if the missing items took the published minimum (1.76). The headline is therefore incompatible with the published subitems under any same-scale averaging. Its exact aggregation (weights / item set) is unpublished → 1.9x is not reproducible from public numbers. With no paired measurement the direction/magnitude of self-report bias is mathematically unidentified."
+  },
+  "identity_transforms": {
+    "time_saved_at_1p9": 0.4736842105263158,
+    "time_saved_at_published_mean": 0.5331465919701215,
+    "note": "1-1/r 是恒等变换，不是因果效应；r 为自我报告则节省比例同样是自我报告口径。"
+  },
+  "identifiability": {
+    "direction_identifiable": false,
+    "magnitude_identifiable": false,
+    "reason": "自我报告偏差 = 报告值 - 真实值，两者无配对、无方差、无对照组；偏差可正可负、幅度无界，无法从单一自我报告均值识别方向或幅度。",
+    "verdict": "NOT_IDENTIFIABLE_WITH_PUBLIC_DATA"
+  },
+  "verdict": {
+    "aggregation_reproducible": false,
+    "selfreport_bias_direction_estimable": false,
+    "selfreport_bias_magnitude_estimable": false,
+    "headline_vs_published_subitems": "inconsistent_under_simple_arithmetic_mean"
+  }
+}

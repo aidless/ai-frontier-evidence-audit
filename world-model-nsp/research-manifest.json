@@ -1,0 +1,158 @@
+{
+  "schema": 2,
+  "project": {
+    "id": "world-model-nsp",
+    "title": "世界模型与 Next-State Prediction (NSP)",
+    "domain": "ai/world-models",
+    "created": "2026-11-19T14:05:43.000Z",
+    "status": "active"
+  },
+  "question": {
+    "text": "以「预测动作/干预后的世界状态」为核心训练目标的世界模型，能否在长时程、跨本体、可交互条件下替代纯符号 next-token 预测，成为具身与规划的统一底座？其能力上限由表征、监督投影还是数据规模决定？",
+    "updatedAt": "2026-11-19T14:05:43.000Z"
+  },
+  "hypotheses": [
+    {
+      "id": "H1",
+      "text": "NSP 相对 next-token 的增益主要来自「动作条件状态转移」监督，而非表征容量；固定参数与数据下，动作条件 NSP 的长时程预测误差累积显著低于 next-frame / next-token 基线。",
+      "status": "not_supported",
+      "experiments": [
+        "E1-nsp-three-arm"
+      ],
+      "reviews": [],
+      "updatedAt": "2026-11-21T00:50:00.000Z"
+    },
+    {
+      "id": "H2",
+      "text": "单一固定 next-state 表征（RGB 或单 latent）是当前瓶颈；动态多投影监督（视觉/语义/几何/交互）能提升跨本体泛化（CF-WAM 方向）。",
+      "status": "supported_synthetic",
+      "experiments": [
+        "E2-multiview-ablation"
+      ],
+      "reviews": [],
+      "updatedAt": "2026-11-21T10:10:21.446009+00:00"
+    },
+    {
+      "id": "H3",
+      "text": "交互式世界模型可用性受 token 带宽约束（4K@60fps 需 >100K tokens/s、1 小时交互需 >100M token context），给定算力下存在可交互性上限。",
+      "status": "proposed",
+      "experiments": [],
+      "reviews": [],
+      "updatedAt": "2026-11-19T14:05:43.000Z"
+    }
+  ],
+  "loop": {
+    "phase": "analysis",
+    "iteration": 4,
+    "history": [
+      {
+        "iteration": 0,
+        "phase": "scoping",
+        "action": "init",
+        "detail": "以「预测动作/干预后的世界状态」为核心训练目标的世界模型，能否在长时程、跨本体、可交互条件下替代纯符号 next-token 预测，成为具身与规划的统一底座？其能力上限由表征、监督投影还是数据规模决定？",
+        "at": "2026-11-19T14:05:43.000Z"
+      },
+      {
+        "iteration": 0,
+        "phase": "scoping",
+        "action": "add-first-experiments",
+        "detail": "added 2 planned experiments from evidence baseline v1",
+        "at": "2026-11-19T14:12:25.000Z"
+      },
+      {
+        "iteration": 1,
+        "phase": "analysis",
+        "action": "e1-precheck-and-gpu-block",
+        "detail": "arXiv API 实测 totalResults=53 / 取回 50，筛查命中 3 篇逐条判定；H1 收窄为动作条件化增益；两个训练实验因零可用 GPU 阻塞。",
+        "at": "2026-11-19T16:05:00.000Z"
+      },
+      {
+        "iteration": 2,
+        "phase": "analysis",
+        "action": "gpu-smoke-verdict-update",
+        "detail": "2026-11-20 实测本机 RTX 3060 Laptop 6GB CUDA 可用（bf16 19.76 TFLOPS），被 ollama 常驻占用后仅剩 ~1GB；4 张 GPU 型卡 verdict 更新为\"显存不足不可行/需腾显存或云 GPU\"。证据：trustworthy-ai/evidence/2026-11-20-gpu-smoke.txt",
+        "at": "2026-11-20T02:35:00.000Z"
+      },
+      {
+        "iteration": 3,
+        "phase": "analysis",
+        "action": "e1-cloud-nsp-three-arm",
+        "detail": "AMD Radeon Cloud gfx1100 跑通合成三臂诊断 full(3 seeds,rho=0.95,H=1000)。原判据(state slope最低)未过; state 绝对长程误差最低为 secondary finding; action 消融比101.9。装置修4处缺陷(horizon写死/C错位/量化饱和/rho过稳)。",
+        "at": "2026-11-21T00:50:00.000Z"
+      },
+      {
+        "at": "2026-11-21T10:10:21.446009+00:00",
+        "event": "e2-cloud-nsp-multiview",
+        "detail": "synthetic multiview diagnostic on AMD gfx1100; h2_supported=true; smoke/full Q2 inconsistency recorded"
+      }
+    ]
+  },
+  "experiments": [
+    {
+      "id": "E1-nsp-three-arm",
+      "title": "固定 backbone 的 next-token / next-frame / action-conditioned NSP 三臂对照，报告 horizon 10/100/1000 误差累积",
+      "hypothesis": "H1",
+      "status": "completed",
+      "created": "2026-11-19T14:12:25.000Z",
+      "updatedAt": "2026-11-21T00:50:00.000Z",
+      "reviews": [],
+      "verdict": "判据未过(诚实负结果): state slope 0.197 非最低(token 0.136 为量化地板假象); 但 state 绝对长程误差最低(mse@1000=0.0024, frame 0.249x/token 0.066x), action 消融比 101.9 证明用了 action。合成数据方法学诊断, 非论文数值复现。",
+      "artifacts": [
+        "world-model-nsp/evidence/2026-11-19-nsp-census.md",
+        "see trustworthy-ai/evidence/2026-11-20-gpu-smoke.txt",
+        "world-model-nsp/evidence/2026-11-21-nsp-three-arm-result.md",
+        "world-model-nsp/evidence/nsp-full-result.json",
+        "world-model-nsp/evidence/nsp-full-analysis.json",
+        "world-model-nsp/analyses/nsp_three_arm.py",
+        "world-model-nsp/analyses/analyze_nsp_full.py"
+      ]
+    },
+    {
+      "id": "E2-multiview-ablation",
+      "title": "CF-WAM 动态多投影监督复现：单投影 vs 多投影消融（跨本体泛化）",
+      "hypothesis": "H2",
+      "status": "completed",
+      "created": "2026-11-19T14:12:25.000Z",
+      "updatedAt": "2026-11-21T10:10:21.446009+00:00",
+      "reviews": [],
+      "verdict": "h2_supported=true (synthetic diagnostic, not CF-WAM reproduction); q1_ratio=0.8912 q2_gap=5.472 consistent_across_seeds=true",
+      "artifacts": [
+        "see trustworthy-ai/evidence/2026-11-20-gpu-smoke.txt"
+      ]
+    }
+  ],
+  "artifacts": [
+    {
+      "name": "evidence-baseline",
+      "latestVersion": "v1",
+      "updatedAt": "2026-11-19T14:05:43.000Z",
+      "description": "六路并行证据核验的落盘基线（含已核实/存疑分级），见 evidence/2026-11-19-baseline.md"
+    },
+    {
+      "name": "manuscript-draft",
+      "latestVersion": "v1",
+      "updatedAt": "2026-11-20T03:12:50.000Z",
+      "description": "证据驱动技术报告初稿（6 份 draft.md 之一），见 manuscript/draft.md"
+    },
+    {
+      "name": "nsp-multiview-full-result",
+      "latestVersion": 1,
+      "updatedAt": "2026-11-21T10:10:21.446009+00:00",
+      "description": "E2 full raw JSON"
+    },
+    {
+      "name": "nsp-multiview-analysis",
+      "latestVersion": 1,
+      "updatedAt": "2026-11-21T10:10:21.446009+00:00",
+      "description": "E2 verdict JSON"
+    },
+    {
+      "name": "nsp-multiview-report",
+      "latestVersion": 1,
+      "updatedAt": "2026-11-21T10:10:21.446009+00:00",
+      "description": "E2 result report md"
+    }
+  ],
+  "reviews": [],
+  "updatedAt": "2026-11-21T10:10:21.446009+00:00"
+}

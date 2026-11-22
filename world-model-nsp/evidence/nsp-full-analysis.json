@@ -1,0 +1,33 @@
+{
+  "token": {
+    "mse_step1": 0.015016,
+    "mse_far": 0.034022,
+    "growth_ratio": 2.266,
+    "slope": 0.1278
+  },
+  "frame": {
+    "mse_step1": 0.000767,
+    "mse_far": 0.011516,
+    "growth_ratio": 15.014,
+    "slope": 0.438
+  },
+  "state": {
+    "mse_step1": 0.000639,
+    "mse_far": 0.003471,
+    "growth_ratio": 5.432,
+    "slope": 0.2727
+  },
+  "comparisons": {
+    "state_vs_frame_far_error": 0.249,
+    "state_vs_token_far_error": 0.066,
+    "state_step1_vs_token_step1": 0.043,
+    "action_ablation_ratio_mean": 101.867
+  },
+  "verdict": {
+    "original_criterion_slope_lowest": "token",
+    "original_criterion_passed": false,
+    "absolute_far_error_lowest": "state",
+    "absolute_far_error_passed": true,
+    "action_dependency_confirmed": true
+  }
+}

@@ -1,0 +1,151 @@
+{
+  "schema": 2,
+  "project": {
+    "id": "embodied-physical-ai",
+    "title": "具身智能与物理 AI：离线 agent + Real2Sim + 真机验证",
+    "domain": "ai/embodied",
+    "created": "2026-11-19T14:05:43.000Z",
+    "status": "active"
+  },
+  "question": {
+    "text": "「离线 agent 写程序 + Real2Sim + 真机验证」的 agentic robotics 范式，能否在非结构化、高变异任务上稳定超越端到端 VLA？其 sim-to-real 保真度的可测边界在哪里？",
+    "updatedAt": "2026-11-19T14:05:43.000Z"
+  },
+  "hypotheses": [
+    {
+      "id": "H1",
+      "text": "真机阶段无模型在环、代码冻结的 agentic 路线，在长程/高变异任务上优于端到端策略（GaP / ACE-CaP-0 方向）。",
+      "status": "proposed",
+      "experiments": [
+        "E1-sim2real-replication",
+        "E2-offline-code-closed-loop"
+      ],
+      "reviews": [],
+      "updatedAt": "2026-11-19T14:12:25.000Z"
+    },
+    {
+      "id": "H2",
+      "text": "Real2Sim 保真度（视觉 + 物理参数）是 sim-to-real 成功率的主要瓶颈；「仿真通过但真机失败」的比例可量化（RoboBuilder 66% 复现率为反证）。",
+      "status": "proposed",
+      "experiments": [],
+      "reviews": [],
+      "updatedAt": "2026-11-19T14:05:43.000Z"
+    },
+    {
+      "id": "H3",
+      "text": "世界-动作联合模型（WAM，如 GR00T 2）的零样本与少样本收益来自视频-动作联合预训练，而非单纯数据量。",
+      "status": "proposed",
+      "experiments": [],
+      "reviews": [],
+      "updatedAt": "2026-11-19T14:05:43.000Z"
+    }
+  ],
+  "loop": {
+    "phase": "analysis",
+    "iteration": 4,
+    "history": [
+      {
+        "iteration": 0,
+        "phase": "scoping",
+        "action": "init",
+        "detail": "「离线 agent 写程序 + Real2Sim + 真机验证」的 agentic robotics 范式，能否在非结构化、高变异任务上稳定超越端到端 VLA？其 sim-to-real 保真度的可测边界在哪里？",
+        "at": "2026-11-19T14:05:43.000Z"
+      },
+      {
+        "iteration": 0,
+        "phase": "scoping",
+        "action": "add-first-experiments",
+        "detail": "added 2 planned experiments from evidence baseline v1",
+        "at": "2026-11-19T14:12:25.000Z"
+      },
+      {
+        "iteration": 1,
+        "phase": "analysis",
+        "action": "e1-recompute-complete",
+        "detail": "三数字反算 + Wilson 区间脚本落盘，selftest 通过；修正 % 格式化 ValueError（f-string）；E2 因底物阻塞。",
+        "at": "2026-11-19T16:05:00.000Z"
+      },
+      {
+        "iteration": 2,
+        "phase": "analysis",
+        "action": "e2-gr00t2-availability-check",
+        "detail": "GitHub API: repo pushed 2026-11-17、stars 8401、tags 只有 n1.5~n1.7、releases 最新 n1.7-release(2026-04-18)；README 全文 grep GR00T2/N2/WAM = 0 命中。GR00T 2 权重未放出，E2 保持 BLOCKED。",
+        "at": "2026-11-20T01:57:37.000Z"
+      },
+      {
+        "iteration": 3,
+        "phase": "analysis",
+        "action": "gr00t2-availability-recheck",
+        "detail": "2026-11-20 二次核验 GR00T2 权重：最新 release 仍 n1.7(2026-04-18)、tags 仅 n1.x、README 无 GR00T2/N2/WAM（上轮 6 处命中是 Cosmos-Reason2-2B 子串误匹配）。E2 维持 BLOCKED。证据：embodied-physical-ai/evidence/2026-11-20-gr00t2-availability.txt",
+        "at": "2026-11-20T02:42:00.000Z"
+      },
+      {
+        "iteration": 4,
+        "phase": "analysis",
+        "action": "e2-stratified-recompute-complete",
+        "detail": "零底物分层复算 ACE-CaP-0(arXiv:2611.16872) Table 1，判据 C1–C4 全过：221/240=92.08%，8 场景各 n=30 均衡，留一极差 2.38pp，最低场景 Bread Packing 83.3% Wilson CI[66.4%,92.7%]覆盖整体，χ²(7)=7.259 p=0.402，观测方差/噪声方差=1.04。判决：92.1% 非少数场景拉动、长尾在 n=30 功效下不显著偏离。selftest B1–B5 全红。E2 status blocked→completed；纠正 manifest 把 GR00T2 阻塞当成本卡判据的错配（GR00T2 是另一实验）。产物 evidence/2026-11-21-acecap0-stratified-recompute.md + .json。",
+        "at": "2026-11-21T05:20:00.000Z"
+      }
+    ]
+  },
+  "experiments": [
+    {
+      "id": "E1-sim2real-replication",
+      "title": "RoboBuilder 协议复算：仿真通过设计在真机的复现率，按任务类别分层",
+      "hypothesis": "H1",
+      "status": "completed",
+      "created": "2026-11-19T14:12:25.000Z",
+      "updatedAt": "2026-11-19T16:05:00.000Z",
+      "reviews": [],
+      "verdict": "用 N_sim=16427 / N_real=135 / p=0.66 复算：成功≈89、失败≈46，筛选率 0.822%，Wilson 95% CI [57.67%,73.45%]（宽 15.78pp），不含 75% 与 50%。66% 只是点估计±7.9pp，与 ACE-CaP-0 的 92.1% 分母/判据不同不可比。selftest 通过。",
+      "artifacts": [
+        "embodied-physical-ai/analyses/recompute_sim2real.py",
+        "embodied-physical-ai/evidence/2026-11-19-sim2real-recompute.txt"
+      ]
+    },
+    {
+      "id": "E2-offline-code-closed-loop",
+      "title": "ACE-CaP-0 离线生成 + 真机验证闭环：冻结代码、无 agent 在环，报告跨场景成功率分布",
+      "hypothesis": "H1",
+      "status": "completed",
+      "created": "2026-11-19T14:12:25.000Z",
+      "updatedAt": "2026-11-21T05:20:00.000Z",
+      "reviews": [],
+      "verdict": "零底物分层复算完成（2026-11-21）：ACE-CaP-0（arXiv:2611.16872）Table 1 逐场景数字公开，直接复算 design 卡判据，无需真机/GR00T2 权重。8 场景各 30 trials（共 240），整体 221/240=92.08%。判据 C1–C4 全过：C1 聚合一致；C2 均衡设计（各 n=30，加权==未加权均值）；C3 留一极差 2.38pp（≤3pp，无单一场景拉动）；C4 最低场景 Bread Packing 83.3% Wilson 95%CI [66.4%,92.7%] 覆盖整体。场景间 sd=5.02pp，观测方差/噪声方差=1.04，χ²(7)=7.259, p=0.402（场景差异与二项噪声一致）。判决：92.1% 不是被少数场景拉动，长尾在 n=30 功效下不显著偏离（低功效不显著 ≠ 证明稳定）。selftest B1–B5 反证全红。诚实边界：只用表1聚合数字、无逐 trial 序列（场景间方差可复算、场景内 trial 级方差不可）、算术复算非物理复现。注意：manifest 原 GR00T2 阻塞指向另一更宏大的闭环实验，与本卡判据不是同一件事。",
+      "artifacts": [
+        "embodied-physical-ai/evidence/2026-11-19-sim2real-recompute.txt",
+        "embodied-physical-ai/evidence/2026-11-20-gr00t2-availability.txt",
+        "embodied-physical-ai/evidence/acecap0-stratified-recompute.json",
+        "embodied-physical-ai/evidence/2026-11-21-acecap0-stratified-recompute.md"
+      ]
+    }
+  ],
+  "artifacts": [
+    {
+      "name": "evidence-baseline",
+      "latestVersion": "v1",
+      "updatedAt": "2026-11-19T14:05:43.000Z",
+      "description": "具身方向证据基线（含 4 处对用户原叙述的修正），见 evidence/2026-11-19-baseline.md"
+    },
+    {
+      "name": "manuscript-draft",
+      "latestVersion": "v1",
+      "updatedAt": "2026-11-20T03:12:50.000Z",
+      "description": "证据驱动技术报告初稿（6 份 draft.md 之一），见 manuscript/draft.md"
+    },
+    {
+      "name": "sim2real-recompute",
+      "latestVersion": "v1",
+      "updatedAt": "2026-11-20T03:13:25.000Z",
+      "description": "RoboBuilder sim2real 复现率重算，见 evidence/2026-11-19-sim2real-recompute.txt"
+    },
+    {
+      "name": "acecap0-stratified-recompute",
+      "latestVersion": "v1",
+      "updatedAt": "2026-11-21T05:20:00.000Z",
+      "description": "ACE-CaP-0 Table 1 分层复算（92.1% 分布/长尾诊断），见 evidence/2026-11-21-acecap0-stratified-recompute.md"
+    }
+  ],
+  "reviews": [],
+  "updatedAt": "2026-11-21T05:20:00.000Z"
+}

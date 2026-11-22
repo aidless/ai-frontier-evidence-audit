@@ -1,0 +1,9 @@
+{
+  "q1_multi_better_indist": true,
+  "q1_error_ratio_multi_over_single": 0.8912,
+  "q2_multi_more_robust": true,
+  "q2_degradation_gap": 5.472,
+  "q2_consistent_across_seeds": true,
+  "params_equal": true,
+  "h2_supported": true
+}

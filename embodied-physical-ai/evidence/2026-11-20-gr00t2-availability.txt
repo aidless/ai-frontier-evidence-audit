@@ -1,0 +1,20 @@
+# GR00T 2 权重可用性复核（2026-11-20 二次，精确口径）
+
+## GitHub 实测
+- `NVIDIA/Isaac-GR00T` releases：最新 `n1.7-release`（2026-04-18T14:45:14Z）；其余 n1.6.1(2026-04-23)/n1.6/n1.5/n1
+- tags：`n1.7-release` / `n1.6.1-release` / `n1.6-release` / `n1.5-release` / `n1-release` —— 无 N2 / GR00T2 标签
+- README（main 分支，HTTP 200 / 39,722B）：头条是 GR00T N1.7 GA，backbone 为 Cosmos-Reason2-2B / Qwen3-VL
+
+## 重要口径纠正
+上一轮「grep `GR00T2|N2|WAM` 零命中」的说法不准确。本次 `grep -icE 'GR00T[ -]?2|N2|world.action|WAM'` 得到 6 处，但精确 `grep -E 'GR00T[ -]?2\b|GR00T N2|world.action|WAM'` 结果为**空**。那 6 处全是 `Cosmos-Reason2-2B` 里的 "Reason2" 子串被 `N2` 正则误匹配——不是 GR00T N2 的真实提及。原因：旧 README backbone 是 Eagle（无 "Reason2"），N1.7 GA 引入 Cosmos-Reason2-2B 后才出现该子串。
+
+## 判决
+GR00T 2 / N2 / WAM 权重与代码**截至 2026-11-20 仍未放出**，与上轮结论一致。embodied-physical-ai E2 维持 BLOCKED。
+grep 计数类核验必须带精确正则（`\b` 边界），否则子串误匹配会翻转"命中/未命中"的判断。
+
+## 复核命令
+```
+curl -sS 'https://api.github.com/repos/NVIDIA/Isaac-GR00T/releases?per_page=5'
+curl -sS 'https://api.github.com/repos/NVIDIA/Isaac-GR00T/tags?per_page=8'
+curl -sS 'https://raw.githubusercontent.com/NVIDIA/Isaac-GR00T/main/README.md' | grep -E 'GR00T[ -]?2\b|GR00T N2|world\.action|WAM'
+```

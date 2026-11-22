@@ -1,0 +1,120 @@
+{
+  "source": "arXiv:2611.16872v1 Table 1 (ACE-CaP-0, frozen-code robot manipulation, coding agent=Claude Opus 5.5)",
+  "recomputed": "2026-11-21 (billion-context session, zero-substrate stratified recompute; NOT a physical reproduction)",
+  "table1": [
+    {
+      "name": "Charger Insertion",
+      "k": 30,
+      "n": 30,
+      "rate": 1.0,
+      "mean_time_min": 1.65,
+      "output_token_M": 1.09
+    },
+    {
+      "name": "Bread Packing",
+      "k": 25,
+      "n": 30,
+      "rate": 0.8333333333333334,
+      "mean_time_min": 1.93,
+      "output_token_M": 2.14
+    },
+    {
+      "name": "Bottle Uncapping",
+      "k": 27,
+      "n": 30,
+      "rate": 0.9,
+      "mean_time_min": 2.23,
+      "output_token_M": 1.17
+    },
+    {
+      "name": "Cup Nesting",
+      "k": 28,
+      "n": 30,
+      "rate": 0.9333333333333333,
+      "mean_time_min": 1.58,
+      "output_token_M": 0.95
+    },
+    {
+      "name": "Flower Insertion",
+      "k": 27,
+      "n": 30,
+      "rate": 0.9,
+      "mean_time_min": 1.37,
+      "output_token_M": 0.92
+    },
+    {
+      "name": "Chicken Plating",
+      "k": 29,
+      "n": 30,
+      "rate": 0.9666666666666667,
+      "mean_time_min": 1.12,
+      "output_token_M": 0.75
+    },
+    {
+      "name": "Parcel Reorientation",
+      "k": 28,
+      "n": 30,
+      "rate": 0.9333333333333333,
+      "mean_time_min": 0.97,
+      "output_token_M": 1.07
+    },
+    {
+      "name": "Shoe Packing",
+      "k": 27,
+      "n": 30,
+      "rate": 0.9,
+      "mean_time_min": 2.27,
+      "output_token_M": 1.87
+    }
+  ],
+  "criteria": {
+    "C1_aggregate_consistency": true,
+    "C2_balanced_design": true,
+    "C3_leave_one_out_robust": true,
+    "C4_long_tail_stable": true
+  },
+  "metrics": {
+    "total_k": 221,
+    "total_n": 240,
+    "overall_rate": 0.9208333333333333,
+    "unweighted_mean_scenario_rate": 0.9208333333333334,
+    "scenario_sd": 0.05019802057692384,
+    "scenario_range_pp": 16.666666666666664,
+    "binomial_noise_sd_at_n30": 0.049294795383000155,
+    "observed_scenario_var": 0.0025198412698412688,
+    "noise_var": 0.0024299768518518533,
+    "var_ratio_observed_over_noise": 1.036981594257135,
+    "leave_one_out": {
+      "Charger Insertion": 0.9095238095238095,
+      "Bread Packing": 0.9333333333333333,
+      "Bottle Uncapping": 0.9238095238095239,
+      "Cup Nesting": 0.919047619047619,
+      "Flower Insertion": 0.9238095238095239,
+      "Chicken Plating": 0.9142857142857143,
+      "Parcel Reorientation": 0.919047619047619,
+      "Shoe Packing": 0.9238095238095239
+    },
+    "leave_one_out_range_pp": 2.3809523809523836,
+    "lowest": {
+      "name": "Bread Packing",
+      "k": 25,
+      "n": 30,
+      "rate": 0.8333333333333334,
+      "wilson_ci": [
+        0.6643529481431982,
+        0.9266356575964831
+      ]
+    },
+    "highest_name": "Charger Insertion",
+    "chi2": 7.2588711597999485,
+    "chi2_df": 7,
+    "chi2_pvalue": 0.4024332195679554
+  },
+  "honest_boundaries": [
+    "Uses only aggregate per-scenario success counts from Table 1 (k/30 each); no per-trial sequences. Scenario-level variance is recomputable; within-scenario trial-level variance / failure clustering / learning effects are NOT.",
+    "Each scenario has only n=30 trials; Wilson CI ~ +/-14pp. 'Long tail stable' means 'not significantly divergent at this sample size', not 'proven stable'.",
+    "This is an arithmetic consistency recompute of the paper's own reported numbers, NOT an independent physical reproduction.",
+    "The design card's blocking note ('GR00T2 weights unreleased') refers to a DIFFERENT, more ambitious closed-loop experiment; this recompute answers the card's actual criterion (is 92.1% pulled by a few scenarios, is the long tail stable) using only ACE-CaP-0 Table 1."
+  ],
+  "verdict": "STRATIFIED_RECOMPUTE_PASS; 92.1% is NOT pulled by a few high-volume scenarios: design is balanced (30 trials each) so weighted == unweighted mean; leave-one-out range only 2.38pp (<=3pp): no single scenario drives the aggregate; lowest scenario Bread Packing 83.3% Wilson CI [66.4%, 92.7%] covers overall 92.1%: long tail not significantly divergent; chi-square heterogeneity p=0.402 (>0.05): scenario variation consistent with binomial sampling noise alone; observed var/noise var = 1.04. (n=30/scenario => low power; arithmetic recompute not physical reproduction.)"
+}

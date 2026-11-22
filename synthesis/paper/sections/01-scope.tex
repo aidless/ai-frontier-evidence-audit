@@ -1,0 +1,51 @@
+\section{Scope and Method: A Shared Skeleton for Recomputable Diagnostics}
+\label{sec:scope}
+
+\subsection{Evidence taxonomy as motivation}
+
+Before building diagnostics we classify the claims. Each of 33 assertions drawn
+from the six directions is scored on three axes: the \emph{carrier} of the result
+(A1 = independent reproduction, A2 = recomputable from released data, A3 =
+author-reported with partial artifact, A4 = announcement only); the \emph{number
+caliber} (B1 = ratio with explicit denominator, B2 = self-reported ratio, B3 =
+qualitative or undefined); and the \emph{recomputability} (C1 = fully
+recomputable, C2 = recomputable with caveats, C3 = not recomputable from public
+material). The composite is the geometric mean of the three axis weights. Of the
+33 assertions, 20 resolve to \texttt{PERF\_EVIDENCE} and 13 to
+\texttt{ANNOUNCEMENT\_ONLY}; the per-direction composite means range from 0.43
+(AI for science) to 0.66 (trustworthy AI). \texttt{ANNOUNCEMENT\_ONLY} is not a
+claim that a result is false---it records that the current public material does
+not let anyone independently recompute it. That distinction is the reason we
+build diagnostics instead of simply downgrading every number.
+
+\subsection{The shared diagnostic skeleton}
+
+All eight diagnostics follow the same five-step skeleton, and each step has an
+explicit failure mode we guard against:
+
+\begin{enumerate}
+  \item \textbf{Pre-registered criterion.} A single, falsifiable criterion is fixed
+  \emph{before} running, so the result is judged by a rule rather than by the
+  outcome we would prefer. (Failure mode: a criterion whose direction is
+  backwards, which we hit on the 1.9x consistency check and had to repair.)
+  \item \textbf{Controlled apparatus.} A three-arm comparison with matched
+  backbone/data/compute, an a-priori power calculation, an arithmetic self-check,
+  a null-model geometry computation, or a stratified re-computation---whatever
+  matches the substrate available.
+  \item \textbf{Counter-evidence self-test.} An injected violation must turn the
+  verdict red. A criterion that cannot fail is decoration, and the self-tests are
+  what separate a real gate from a tautology.
+  \item \textbf{Landed, recomputable evidence.} Every number is written to a file
+  from which it can be re-derived, with the command line recorded.
+  \item \textbf{Honest caliber statement.} The report states exactly what the
+  apparatus does and does not measure, so the scope of the conclusion travels with
+  the number.
+\end{enumerate}
+
+The recurring lesson, made concrete across eight instances, is that step~3 is the
+one most often skipped and most often load-bearing: a quantization floor, a
+mis-aligned arm, a template shortcut, a cancellation artifact, a ``nan'' in a
+non-central-$t$ tail, a reversed criterion direction, and a slow run that
+disagrees with a table all \emph{looked} green until a counter-evidence test
+caught them. Section~\ref{sec:lessons} treats this as the central methodological
+contribution.

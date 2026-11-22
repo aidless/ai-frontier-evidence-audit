@@ -1,0 +1,37 @@
+# 本机 GPU 可用性实测（2026-11-20，会话内亚分钟 smoke）
+# 触发：此前两轮「零可用 GPU」结论为误抄 AGENTS.md 过期表述；MEMORY.md:61 已于 2026-11-17 实测翻案。
+
+## 硬件与框架
+nvidia-smi: NVIDIA GeForce RTX 3060 Laptop GPU / 6144 MiB / driver 595.99.02 / sm_86
+torch: 2.14.1+cu130 / cuda_available=True / device_count=1 / bf16=True
+
+## 算力（torch bf16 matmul，20 iter 平均）
+1024x1024: 0.240 ms/iter, 8.94 TFLOPS
+2048x2048: 0.870 ms/iter, 19.76 TFLOPS
+peak allocated 40.1 MiB（纯算力，不含模型）
+
+## 显存现状（关键约束）
+ollama llama-server (pid <pid-a>) 常驻 4.59-4.70 GiB
+→ 实测空闲仅 0.9-1.1 GiB（free_before=973 MiB）
+→ Qwen3-0.6B bf16 HF 加载 OOM（需 ~20MB 时 free 仅 13MiB）
+→ Qwen2.5-0.5B HF 权重不完整（无 safetensors）
+
+## ollama 0.5b 生成
+ollama run qwen2.5:0.5b "Count from 1 to 5." → 27.81s 输出 1/2/3/4/5（含模型换入+加载）
+（首字延迟含换入，非纯 decode 吞吐；纯 decode 需模型常驻后二次测）
+
+## 判决（对本会话 4 张 GPU 型卡）
+| 卡 | 最小可行 smoke 能否本机跑 | 原因 |
+|---|---|---|
+| worldmodel E1 三臂 | 否 | 三臂对比需多 checkpoint 常驻，6GB 单卡+1GB 空闲无法容纳 |
+| worldmodel E2 多视图 | 否 | 多视图编码器 + 批量前向超 1GB 空闲 |
+| trustworthy E2 激活探针 | 否（可小规模） | 需多模型权重，单模型 bf16 0.6B≈1.2GB 已超空闲；可 CPU 或量化后小规模 |
+| fm E2 解释vs能耗 | 否（可 CPU 代理） | 能耗测需连续前向+功率采样，GPU 被占且无法独占 |
+
+结论：GPU 计算链路真实可用（19.76 TFLOPS bf16 实测），但**被 ollama 常驻占用后仅剩 ~1GB**，4 张 GPU 型卡均无法在「不腾显存」前提下完成最小可行 smoke。
+解锁条件（按性价比）：
+1) 临时停 ollama llama-server（pid <pid-a>，释放 4.6GB）→ 可跑 Qwen3-0.6B 及更大模型 smoke（需先确认无其他会话依赖该进程）；
+2) 上云申请 GPU 机时（零成本通道目前无 GPU：ecs-hz 1GB、hpccube 无 GPU）。
+
+## 复核
+ollama llama-server pid <pid-a> = 当前用户 <user> 所有，--port <port> --host 127.0.0.1，离线模式 -c 4096，进程由 ollama serve (pid <pid-b>) 管理。

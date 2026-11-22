@@ -1,0 +1,156 @@
+{
+  "verifiedAt": "2026-11-20T03:28:16.000Z",
+  "source": "arXiv API export.arxiv.org/api/query?id_list=... (3 batches, 37 entries resolved)",
+  "method": "号-题一致：API 返回标题与手稿描述的论文主题人工比对，37/37 一致",
+  "count": 37,
+  "entries": {
+    "1803.10122": {
+      "title": "World Models",
+      "verdict": "VERIFIED"
+    },
+    "2402.15391": {
+      "title": "Genie: Generative Interactive Environments",
+      "verdict": "VERIFIED"
+    },
+    "2404.08471": {
+      "title": "Revisiting Feature Prediction for Learning Visual Representations from Video",
+      "verdict": "VERIFIED"
+    },
+    "2410.04940": {
+      "title": "Next state prediction gives rise to entangled, yet compositional representations of objects",
+      "verdict": "VERIFIED"
+    },
+    "2412.04984": {
+      "title": "Frontier Models are Capable of In-context Scheming",
+      "verdict": "VERIFIED"
+    },
+    "2502.17424": {
+      "title": "Emergent Misalignment: Narrow finetuning can produce broadly misaligned LLMs",
+      "verdict": "VERIFIED"
+    },
+    "2503.01935": {
+      "title": "MultiAgentBench: Evaluating the Collaboration and Competition of LLM agents",
+      "verdict": "VERIFIED"
+    },
+    "2503.13657": {
+      "title": "Why Do Multi-Agent LLM Systems Fail?",
+      "verdict": "VERIFIED"
+    },
+    "2504.16736": {
+      "title": "A Survey of AI Agent Protocols",
+      "verdict": "VERIFIED"
+    },
+    "2505.01420": {
+      "title": "Evaluating Frontier Models for Stealth and Situational Awareness",
+      "verdict": "VERIFIED"
+    },
+    "2505.14892": {
+      "title": "Scaling Laws for State Dynamics in Large Language Models",
+      "verdict": "VERIFIED"
+    },
+    "2505.22954": {
+      "title": "Darwin Godel Machine: Open-Ended Evolution of Self-Improving Agents",
+      "verdict": "VERIFIED"
+    },
+    "2506.13131": {
+      "title": "AlphaEvolve: A coding agent for scientific and algorithmic discovery",
+      "verdict": "VERIFIED"
+    },
+    "2506.14429": {
+      "title": "LongLLaDA: Unlocking Long Context Capabilities in Diffusion LLMs",
+      "verdict": "VERIFIED"
+    },
+    "2510.03342": {
+      "title": "Gemini Robotics 1.5: Pushing the Frontier of Generalist Robots with Advanced Embodied Reasoning, Thinking, and Motion Transfer",
+      "verdict": "VERIFIED"
+    },
+    "2510.10125": {
+      "title": "Ctrl-World: A Controllable Generative World Model for Robot Manipulation",
+      "verdict": "VERIFIED"
+    },
+    "2510.26583": {
+      "title": "Emu3.5: Native Multimodal Models are World Learners",
+      "verdict": "VERIFIED"
+    },
+    "2602.08971": {
+      "title": "WorldArena: A Unified Benchmark for Evaluating Perception and Functional Utility of Embodied World Models",
+      "verdict": "VERIFIED"
+    },
+    "2606.30534": {
+      "title": "Orca: The World is in Your Mind",
+      "verdict": "VERIFIED"
+    },
+    "2607.05369": {
+      "title": "GaP: A Graph-as-Policy Multi-Agent Self-Learning Harness For Variational Automation Tasks",
+      "verdict": "VERIFIED"
+    },
+    "2609.19101": {
+      "title": "Monitoring and Discovering Reward Hacking with Internal Representations during LLM Evaluations",
+      "verdict": "VERIFIED"
+    },
+    "2609.34414": {
+      "title": "From World Models to World Action Models: Rethinking Next-State Prediction",
+      "verdict": "VERIFIED"
+    },
+    "2610.18835": {
+      "title": "RoboSimStudio: An Interactive Toolkit for Human and Agent Rapid Real2Sim of Robot Manipulation Tasks",
+      "verdict": "VERIFIED"
+    },
+    "2610.38389": {
+      "title": "Visually Irrelevant Hallucinations in Medical Vision-Language Models",
+      "verdict": "VERIFIED"
+    },
+    "2610.42084": {
+      "title": "RangeSWA: Training-Free Length Extrapolation for Continuous Diffusion Language Models",
+      "verdict": "VERIFIED"
+    },
+    "2611.11941": {
+      "title": "Flip Anything with Agentic Robotics Self-Learning",
+      "verdict": "VERIFIED"
+    },
+    "2611.12799": {
+      "title": "Agentic-OPD: Recovering Forgotten Agent Capabilities via On-Policy Distillation for Agentic Tasks",
+      "verdict": "VERIFIED"
+    },
+    "2611.12835": {
+      "title": "Mitigating Agentic Deception via Evaluation-Side Partially Observable Games",
+      "verdict": "VERIFIED"
+    },
+    "2611.12856": {
+      "title": "WorkflowArena: Benchmarking Executable Workflow Orchestration in LLM-Based Multi-Agent Systems",
+      "verdict": "VERIFIED"
+    },
+    "2611.14960": {
+      "title": "Termination Lag: Coding Agents Solve Early but Stop Late",
+      "verdict": "VERIFIED"
+    },
+    "2611.14975": {
+      "title": "Aggregate Accuracy Hides Diagnosis-Specific Failure in Medical Vision-Language Models",
+      "verdict": "VERIFIED"
+    },
+    "2611.14996": {
+      "title": "Breaking Bad: \"Going Badly\" Activations Drive Reward Hacking",
+      "verdict": "VERIFIED"
+    },
+    "2611.15029": {
+      "title": "Mask-Pattern Position Augmentation: Training-Free Long-Context Extrapolation for Diffusion LLMs",
+      "verdict": "VERIFIED"
+    },
+    "2611.15041": {
+      "title": "AROMA: Adaptive Representation-Oriented Multimodal Actuation for Vision-Language Model Control",
+      "verdict": "VERIFIED"
+    },
+    "2611.16872": {
+      "title": "ACE-CaP-0: Real-World Code-as-Policies in the Era of Experience",
+      "verdict": "VERIFIED"
+    },
+    "2611.23855": {
+      "title": "RoboBuilder: Agentic Robot Co-Design with Real-world Video Feedback in the Loop",
+      "verdict": "VERIFIED"
+    },
+    "2611.24395": {
+      "title": "RSIBench-Infra: Can Agents Optimize Their Own Training and Inference Infrastructure at Production Scale?",
+      "verdict": "VERIFIED"
+    }
+  }
+}

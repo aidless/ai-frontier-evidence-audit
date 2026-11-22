@@ -1,0 +1,268 @@
+{
+  "baseline": {
+    "success": 0.9695,
+    "undo_rate": 0.0305,
+    "mean_steps": 23.89
+  },
+  "oracle_upper_bound": {
+    "success": 1.0,
+    "undo_rate": 0.0,
+    "mean_steps": 7.08,
+    "step_save_frac": 0.7038
+  },
+  "calibration": {
+    "baseline_undo_in_paper_range_1_8pct": true,
+    "note": "baseline 撤销率需落论文 1-8% 区间；否则装置量级失配"
+  },
+  "grid": [
+    {
+      "fpr": 0.0,
+      "fnr": 0.0,
+      "success": 1.0,
+      "undo_rate": 0.0,
+      "steps": 7.08,
+      "step_save_frac": 0.7038,
+      "undo_ok": true,
+      "success_ok": true,
+      "effective": true
+    },
+    {
+      "fpr": 0.0,
+      "fnr": 0.1,
+      "success": 1.0,
+      "undo_rate": 0.0,
+      "steps": 7.17,
+      "step_save_frac": 0.6998,
+      "undo_ok": true,
+      "success_ok": true,
+      "effective": true
+    },
+    {
+      "fpr": 0.0,
+      "fnr": 0.3,
+      "success": 0.9998,
+      "undo_rate": 0.0003,
+      "steps": 7.45,
+      "step_save_frac": 0.6883,
+      "undo_ok": true,
+      "success_ok": true,
+      "effective": true
+    },
+    {
+      "fpr": 0.0,
+      "fnr": 0.6,
+      "success": 0.999,
+      "undo_rate": 0.0009,
+      "steps": 8.34,
+      "step_save_frac": 0.6508,
+      "undo_ok": false,
+      "success_ok": true,
+      "effective": false
+    },
+    {
+      "fpr": 0.01,
+      "fnr": 0.0,
+      "success": 0.9435,
+      "undo_rate": 0.0,
+      "steps": 6.45,
+      "step_save_frac": 0.7299,
+      "undo_ok": true,
+      "success_ok": false,
+      "effective": false
+    },
+    {
+      "fpr": 0.01,
+      "fnr": 0.1,
+      "success": 0.9419,
+      "undo_rate": 0.0001,
+      "steps": 6.55,
+      "step_save_frac": 0.7257,
+      "undo_ok": true,
+      "success_ok": false,
+      "effective": false
+    },
+    {
+      "fpr": 0.01,
+      "fnr": 0.3,
+      "success": 0.9417,
+      "undo_rate": 0.0004,
+      "steps": 6.78,
+      "step_save_frac": 0.7161,
+      "undo_ok": true,
+      "success_ok": false,
+      "effective": false
+    },
+    {
+      "fpr": 0.01,
+      "fnr": 0.6,
+      "success": 0.9421,
+      "undo_rate": 0.0009,
+      "steps": 7.67,
+      "step_save_frac": 0.6789,
+      "undo_ok": false,
+      "success_ok": false,
+      "effective": false
+    },
+    {
+      "fpr": 0.05,
+      "fnr": 0.0,
+      "success": 0.7996,
+      "undo_rate": 0.0,
+      "steps": 4.74,
+      "step_save_frac": 0.8017,
+      "undo_ok": true,
+      "success_ok": false,
+      "effective": false
+    },
+    {
+      "fpr": 0.05,
+      "fnr": 0.1,
+      "success": 0.7954,
+      "undo_rate": 0.0002,
+      "steps": 4.81,
+      "step_save_frac": 0.7985,
+      "undo_ok": true,
+      "success_ok": false,
+      "effective": false
+    },
+    {
+      "fpr": 0.05,
+      "fnr": 0.3,
+      "success": 0.798,
+      "undo_rate": 0.0006,
+      "steps": 5.07,
+      "step_save_frac": 0.7879,
+      "undo_ok": false,
+      "success_ok": false,
+      "effective": false
+    },
+    {
+      "fpr": 0.05,
+      "fnr": 0.6,
+      "success": 0.7966,
+      "undo_rate": 0.0026,
+      "steps": 5.83,
+      "step_save_frac": 0.7559,
+      "undo_ok": false,
+      "success_ok": false,
+      "effective": false
+    },
+    {
+      "fpr": 0.1,
+      "fnr": 0.0,
+      "success": 0.7107,
+      "undo_rate": 0.0,
+      "steps": 3.52,
+      "step_save_frac": 0.8526,
+      "undo_ok": true,
+      "success_ok": false,
+      "effective": false
+    },
+    {
+      "fpr": 0.1,
+      "fnr": 0.1,
+      "success": 0.7119,
+      "undo_rate": 0.0002,
+      "steps": 3.6,
+      "step_save_frac": 0.8494,
+      "undo_ok": true,
+      "success_ok": false,
+      "effective": false
+    },
+    {
+      "fpr": 0.1,
+      "fnr": 0.3,
+      "success": 0.7108,
+      "undo_rate": 0.001,
+      "steps": 3.8,
+      "step_save_frac": 0.8411,
+      "undo_ok": false,
+      "success_ok": false,
+      "effective": false
+    },
+    {
+      "fpr": 0.1,
+      "fnr": 0.6,
+      "success": 0.7093,
+      "undo_rate": 0.004,
+      "steps": 4.56,
+      "step_save_frac": 0.8093,
+      "undo_ok": false,
+      "success_ok": false,
+      "effective": false
+    },
+    {
+      "fpr": 0.3,
+      "fnr": 0.0,
+      "success": 0.6294,
+      "undo_rate": 0.0,
+      "steps": 1.86,
+      "step_save_frac": 0.9222,
+      "undo_ok": true,
+      "success_ok": false,
+      "effective": false
+    },
+    {
+      "fpr": 0.3,
+      "fnr": 0.1,
+      "success": 0.628,
+      "undo_rate": 0.0004,
+      "steps": 1.94,
+      "step_save_frac": 0.9188,
+      "undo_ok": true,
+      "success_ok": false,
+      "effective": false
+    },
+    {
+      "fpr": 0.3,
+      "fnr": 0.3,
+      "success": 0.626,
+      "undo_rate": 0.0024,
+      "steps": 2.13,
+      "step_save_frac": 0.9109,
+      "undo_ok": false,
+      "success_ok": false,
+      "effective": false
+    },
+    {
+      "fpr": 0.3,
+      "fnr": 0.6,
+      "success": 0.621,
+      "undo_rate": 0.0062,
+      "steps": 2.79,
+      "step_save_frac": 0.8831,
+      "undo_ok": false,
+      "success_ok": false,
+      "effective": false
+    }
+  ],
+  "sweet_spot_exists": true,
+  "n_effective_points": 3,
+  "fpr_at_effective_points": [
+    0.0
+  ],
+  "fpr_at_ineffective_points": [
+    0.0,
+    0.01,
+    0.05,
+    0.1,
+    0.3
+  ],
+  "fpr_dominates": true,
+  "counterfactuals": {
+    "C1_always_report": {
+      "effective": false,
+      "expect": false
+    },
+    "C2_never_report": {
+      "effective": false,
+      "expect": false
+    },
+    "C3_perfect": {
+      "effective": true,
+      "expect": true
+    },
+    "all_counterfactuals_pass": true
+  },
+  "claim": "early-exit intervention effective only under low-FPR correctness detector"
+}

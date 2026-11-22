@@ -1,0 +1,140 @@
+{
+  "experiment": "E2-workflow-author-effect/detectability-audit",
+  "generated_at": "2026-11-21T15:47:00+00:00",
+  "nature": "a-priori detectability / MDE audit; NOT a WF Arena numerical replication",
+  "substrate": {
+    "availability_md": "agentic-systems/experiments/E2-workflow-author-effect/availability.md",
+    "verbatim_limits": [
+      "Each configuration is evaluated once per task, so differences between closely ranked configurations are reported without variance estimates.",
+      "Content and 3D deliverables are graded against task rubrics by an LLM judge, and agreement with human graders is not measured in this work."
+    ],
+    "n_tasks_in_paper": 145,
+    "n_models_in_paper": 9,
+    "single_eval_per_task": true,
+    "variance_estimates_published": false,
+    "human_judge_agreement_measured": false
+  },
+  "design": {
+    "unit_of_analysis": "task (paired per task)",
+    "main_test": "paired t-test on d_i = score_A - score_B; H0 E[d]=0",
+    "interaction_test": "two-sample t on d between easy/hard task halves",
+    "alpha": 0.05,
+    "target_power": 0.8,
+    "sesoi_status": "NOT_AVAILABLE_FROM_SUBSTRATE",
+    "sesoi_reason": "paper publishes no variance estimate and no human-agreement measurement; no defensible score-point SESOI can be set without inventing one",
+    "approach": "report MDE + sensitivity curve (no single invented effect; no post-hoc observed power)"
+  },
+  "main_effect_mde_dz_at_145_tasks": 0.23422472710006442,
+  "mde_by_task_count": [
+    {
+      "n": 48,
+      "mde_dz": 0.4128740035583678
+    },
+    {
+      "n": 72,
+      "mde_dz": 0.33472004119747933
+    },
+    {
+      "n": 100,
+      "mde_dz": 0.28291263278138645
+    },
+    {
+      "n": 145,
+      "mde_dz": 0.23422472710006442
+    }
+  ],
+  "difficulty_interaction": {
+    "n_easy": 72,
+    "n_hard": 73,
+    "mde_dz": 0.4684827016772982,
+    "ratio_to_main": 2.0001419469138932
+  },
+  "repeated_evaluation_scaling": [
+    {
+      "R": 1,
+      "mde_dz_in_single_eval_sigma": 0.23422472710006442
+    },
+    {
+      "R": 4,
+      "mde_dz_in_single_eval_sigma": 0.11711236355003221
+    },
+    {
+      "R": 16,
+      "mde_dz_in_single_eval_sigma": 0.058556181775016106
+    },
+    {
+      "R": 64,
+      "mde_dz_in_single_eval_sigma": 0.029278090887508053
+    }
+  ],
+  "sensitivity_at_145_tasks": [
+    {
+      "dz": 0.0,
+      "power_at_145": 0.05000000000000006,
+      "n_required": null
+    },
+    {
+      "dz": 0.1,
+      "power_at_145": 0.2232847375468589,
+      "n_required": 787
+    },
+    {
+      "dz": 0.2,
+      "power_at_145": 0.6672333640035387,
+      "n_required": 199
+    },
+    {
+      "dz": 0.234,
+      "power_at_145": 0.7992466599011703,
+      "n_required": 146
+    },
+    {
+      "dz": 0.3,
+      "power_at_145": 0.9482713206956194,
+      "n_required": 90
+    },
+    {
+      "dz": 0.5,
+      "power_at_145": 0.999970936580277,
+      "n_required": 34
+    }
+  ],
+  "montecarlo": {
+    "type_i_error": {
+      "n": 145,
+      "n_sims": 5000,
+      "alpha": 0.05,
+      "rejections": 225,
+      "rate": 0.045,
+      "rate_wilson95": [
+        0.03959473424095406,
+        0.05110390018424437
+      ],
+      "seed": 20261121
+    },
+    "power_at_mde": {
+      "dz": 0.23422472710006442,
+      "n": 145,
+      "n_sims": 5000,
+      "rejections": 3998,
+      "rate": 0.7996,
+      "rate_wilson95": [
+        0.788276122182388,
+        0.8104638539191737
+      ],
+      "analytic": 0.8,
+      "seed": 20261122
+    }
+  },
+  "verdict": {
+    "checks": {
+      "type_i_valid": true,
+      "mde_decreases_with_n": true,
+      "interaction_harder_than_main": true,
+      "repeats_reduce_mde": true
+    },
+    "all_checks_pass": true,
+    "claim": "Under WF Arena's single-evaluation protocol the author-effect claim is decidable only above the MDE; the difficulty-interaction claim needs a larger effect at the same N. No variance estimates in substrate => absolute score-point SESOI unavailable; MDE is reported in dz units.",
+    "substrate_supports_point_effect_reading": false
+  }
+}

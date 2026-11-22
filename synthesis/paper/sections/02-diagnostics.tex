@@ -1,0 +1,175 @@
+\section{The Eight Diagnostics}
+\label{sec:diagnostics}
+
+Table~\ref{tab:eight} lists all eight, each with its apparatus, pre-registered
+criterion, main result, verdict, and the caliber boundary that travels with it.
+Four are direct, citable findings; four are quantitative statements about
+public-material limits that we nonetheless count as results.
+
+\begin{center}
+\scriptsize
+\setlength{\tabcolsep}{3.2pt}
+\begin{longtable}{@{}p{2.3cm}p{2.5cm}p{2.5cm}p{3.6cm}p{1.85cm}p{2.6cm}@{}}
+\toprule
+Diagnostic (project / card) & Apparatus & Pre-registered criterion & Main result & Verdict & Caliber boundary \\
+\midrule
+\endhead
+NSP three-arm (worldmodel E1) & synthetic linear dynamics, shared backbone, heads differ & state arm has lowest cumulative slope & state slope 0.197 not lowest; absolute mse@1000 = 0.0024 lowest & criterion \textbf{failed}; keep secondary finding & quantization floor fakes low slope; not a paper reproduction \\
+Multi-view (worldmodel E2) & 4 complementary projections, matched params 68748 & multi cross-embodiment degradation $<$ single & 3.03x vs 8.50x, 3/3 seeds & \textbf{h2\_supported = true} & single-step, not E1 long-horizon; CF-WAM code unreleased \\
+DoM probe (trustworthy E2) & Qwen2.5-7B/14B real weights, unseen-family transfer & Q1 unseen TPR $\geq$ 0.8 + Q2 signal$-$shortcut $\geq$ 0.2 & 7B Q1/Q2 marginal; 14B validator TPR = 0, Q2 = 0.10 fail & \textbf{mixed / partly negative} & cross-scale hidden 3584 vs 5120 not portable; not a cross-family reproduction \\
+Termination-lag early stop (agentic E1) & pure-numpy synthetic patch trajectories, three arms & zero cancellation and success not degraded; dominant factor is FPR & calibrated cancel 3.05\%, FPR = 0 works, FPR $\geq$ 0.01 success collapses & \textbf{criterion holds} (fpr\_dominates = true) & synthetic params, not measured; FPR/FNR are a sweep grid \\
+Workflow detectability (agentic E2) & a-priori non-central-$t$ power + 5000 MC & SESOI unavailable $\rightarrow$ report MDE; difficulty interaction harder than main & main MDE dz 0.234, interaction d 0.468 (2x), R16 $\rightarrow$ 0.059 & \textbf{cannot-judge is the result} (not\_answerable) & MDE is not existence; dz unitless, $\sigma$ unpublished so no score points \\
+1.9x consistency (ai4science E2) & arithmetic self-check on public numbers + identifiability & headline should be reproducible from public sub-items & mean 2.142 / median 2.05 / geom 2.112 all $\neq$ 1.9; feasible interval [1.999, 2.400] excludes 1.9 & \textbf{not\_identifiable\_with\_public\_data} & does not claim 1.9 wrong, only unreproducible; direction not identifiable without pairs \\
+Explanation--energy geometry (fm E2) & isotropic null model d=128/r=4 + Beta analytic & is the 89.82\% vs 9.52\% split a low-rank geometry universal? & E $\approx$ r/d = 3.125\% (median 2.63\%), corr(A,E) = 0.011, A\_null 99th = 0.220 matches AROMA 0.219 & \textbf{GEOMETRY\_GENERIC} (C1--C4 all true) & not AROMA reproduction; h isotropic is an assumption, holds also for anisotropic; +8.00pp count gain not re-measured \\
+92.1\% stratified re-compute (embodied E2) & ACE-CaP-0 Table 1 per-scenario aggregates, 8 scenarios n=30 & is 92.1\% a few-scenario high mean; is the tail stable? & balanced design (weighted == unweighted 0.9208), LOO range 2.38pp, lowest scenario 83.3\% Wilson CI [66.4\%, 92.7\%] covers overall, $\chi^2(7) = 7.259$, p = 0.402, variance ratio 1.04 & \textbf{STRATIFIED\_RECOMPUTE\_PASS} (C1--C4 true) & not physical reproduction, only Table 1 aggregates, no per-trial series (between-scenario variance computable, within-scenario not); n=30 ``not significant'' $\neq$ ``proven stable''; GR00T2 is a different experiment \\
+\bottomrule
+\caption{The eight recomputable methodological diagnostics, with apparatus,
+pre-registered criterion, main result, verdict, and the caliber boundary that
+travels with each conclusion. All numbers are re-derivable from the corresponding
+project's \texttt{evidence/} artifacts and \texttt{analyses/} scripts.}
+\label{tab:eight}
+\end{longtable}
+\end{center}
+
+\subsection{NSP three-arm (world model E1)}
+
+On a synthetic linear dynamical system, three arms share backbone, data, and
+compute and differ only in the output head (token cross-entropy over a
+quantized frame, frame-space MSE, or latent-state MSE). The pre-registered
+criterion was that the state arm should have the \emph{lowest cumulative
+rollout slope}. It failed: the state slope 0.197 was not the lowest. The token
+arm's slope (0.136) was lowest only because its starting error hit a quantization
+floor, which fabricates a low slope on a stable system. The state arm does,
+however, have the lowest \emph{absolute} long-horizon error (mse@1000 =
+0.0024, 0.249x of frame and 0.066x of token), and an action ablation ratio of
+101.9 confirms the model uses the action signal. The verdict is therefore
+``criterion failed, keep a secondary finding'': the abstract level of the
+prediction target affects absolute precision (support) but not cumulative slope
+(no support), and the slope criterion is unreliable on stable dynamics. The
+direct counterpoint to the narrative is that the paper-level claim of a
+fixed-backbone three-arm advantage has no precedent in the 50 abstracts we
+retrieved, and the cited negative result is that state tracking is limited to
+pattern matching and emerges from weak interaction of several next-token
+heads~\cite{statelaws2025}.
+
+\subsection{Multi-view projection (world model E2)}
+
+Because the CF-WAM code and weights are not released~\cite{wam2026}, we build a
+synthetic analogue: a latent state observed through four complementary
+projections, with a single-view arm (visual only) and a multi-view arm (four
+views concatenated), matched at 68{,}748 parameters. Across three seeds the
+multi-view arm degrades 3.03x under a cross-embodiment perturbation versus
+8.50x for the single view (a 5.47 gap), with the direction stable 3/3 seeds;
+criterion H2 is supported. The honest boundary is that information complementarity
+is not free (the multi-view input is higher-dimensional), that robustness---not
+in-distribution accuracy (0.0081 vs 0.0091, ratio 0.891)---is the real analogue
+of ``cross-embodiment generalization'', and that an under-trained smoke run had
+Q2 false while the full run was stable. We report that smoke instability rather
+than hiding it.
+
+\subsection{DoM probe on real models (trustworthy AI E2)}
+
+Using Qwen2.5-7B-base and 14B-base weights, we train a probe only on a
+test-suite-tampering family plus five honest templates, and test transfer to
+fully unseen validator/scorefile/acquire families. The verdict is
+mixed/partly negative. On 7B all three unseen families reach TPR@1\%FPR = 1.0
+(Q1 passes) but a label-permutation control reaches AUC 0.758, so
+signal$-$shortcut = 0.242 only barely clears the 0.2 bar (Q2 marginal). On 14B
+the validator family has TPR = 0.0 (Q1 fails) and the permutation control reaches
+AUC 0.85 (Q2 fails). The hidden dimensions differ (3584 vs 5120), so the
+direction does not transfer across scale, and Q3 is judged
+NOT\_ANSWERABLE. Logit-lens readouts are garbled tokens, not the
+``cheating/illicit'' semantics of the original DoM report~\cite{dom2026}---the
+probe direction is not interpretable in our setup. This is a method-level result
+about probe transfer, not a reproduction of the paper.
+
+\subsection{Termination-lag early stop (agentic E1)}
+
+The per-step patch trajectories of the termination-lag study~\cite{termlag2026}
+are not released, so we build an equivalent synthetic trajectory apparatus
+(three arms: baseline, offline oracle, deployable detector with a
+FPR/FNR grid). The baseline cancellation rate calibrates to 3.05\% (inside the
+paper's 1--8\% band) and the offline oracle saves 70.4\% of steps with zero
+cancellation; but the online-deployable detector is only effective at FPR = 0,
+with success collapsing from 96.95\% to 94.35\% at FPR = 0.01 and to 62.94\% at
+FPR = 0.30. The criterion ``early-stop success is governed by the
+false-positive rate, not recall'' holds (fpr\_dominates = true): a false negative
+only stops later, but a false positive kills an unfinished run outright. This
+translates the paper's offline-oracle conclusion into an online deployment
+constraint: you need a near-zero-FPR correctness criterion before early stopping,
+or the saved steps cost success rate. The self-tests (FPR = 1 must judge false;
+FNR = 1 must judge false; perfect detector must judge true) prove the apparatus
+can fail.
+
+\subsection{Workflow-author detectability (agentic E2)}
+
+WorkflowArena's substrate is unavailable and the paper itself states each
+configuration is evaluated once per task without variance
+estimates~\cite{workflowarena2026}, so the original criterion (is the author
+effect reproducible, and does it vary with difficulty?) is not decidable on
+public data. We convert this into an a-priori power analysis. The main-effect MDE
+at 145 tasks is dz = 0.234 (below this, undetectable); the difficulty interaction
+(72/73 split) has MDE d = 0.468, exactly 2x the main effect---``varies with
+difficulty'' is intrinsically twice as hard to detect as ``there is a
+difference''; evaluating each task R = 16 times lowers the MDE to 0.059. Monte
+Carlo (5000 draws) confirms the H0 rejection rate 0.045 [0.0396, 0.0511] and
+power 0.7996 at the MDE. The result is ``cannot-judge is the result'': not that
+the author effect is absent, but that the current protocol cannot decide dz $<$
+0.234. We learned here that a criterion's direction must be able to fail (the
+C3 check originally had the comparison backwards).
+
+\subsection{1.9x internal consistency (AI for science E2)}
+
+The paired human-subject substrate behind the OpenAI 1.9x self-report is
+unavailable~\cite{openai-science}. We do an arithmetic self-check on the public
+numbers. The five public sub-items have mean 2.142, median 2.05, and geometric
+mean 2.112, none equal to 1.9; if 1.9 is an eight-item arithmetic mean, the three
+unpublished items would have to average 1.497 (below the lowest public sub-item
+1.76); and the feasible mean interval [1.999, 2.400] does not contain 1.9 at all.
+The 1.9x headline is therefore not reproducible from public sub-items on the
+same caliber, and without pairs or variance the direction and magnitude of any
+deviation are mathematically not identifiable---we can only give the time-saving
+identity transform (1.9x $\rightarrow$ 47.4\%). We do not claim 1.9x is wrong; we
+claim it is not auditable. The caliber lesson: 1.9x (self-reported time ratio)
+must never be sorted beside 9.3x (an independently recomputable cost-performance
+ratio) from the MIT CRESt result~\cite{crest}.
+
+\subsection{Explanation--energy geometry (foundation-model efficiency E2)}
+
+AROMA reports that the top-4 sensitivity subspace explains 89.82\% of the
+second moment yet carries only 9.52\% of median activation
+energy~\cite{aroma2026}, which reads like a method finding high-leverage
+directions. An isotropic null model (d = 128, rank r = 4, g and h isotropic)
+shows this split is the low-rank geometry universal when $r \ll d$: theoretical
+median energy r/d = 3.125\%, model null median 2.63\%, and corr(A, E) = 0.011
+(sensitivity concentration and energy share are not coupled in the null at all);
+the A-null 99th percentile 0.220 matches the paper's own isotropic-null report of
+0.219. So 9.52\% is a geometric necessity, neither a defect nor an achievement of
+the method; the real increment is that 89.82\% far exceeds its own isotropic
+null (10{,}000 rank-matched draws), while the ``high explanation + low energy''
+pair carries no methodological information. We note explicitly that we measure
+only the A--E coupling geometry, not the +8.00pp count gain, which we did not
+re-measure. The null energy uses the analytic $\mathrm{Beta}(r/2,(d-r)/2)$ law
+(equivalent and orders of magnitude faster than per-sample eigendecomposition),
+and the A-null 99th percentile is sensitive to the number of gradient samples N
+(16 $\rightarrow$ 0.3985, 40 $\rightarrow$ 0.2199, 64 $\rightarrow$ 0.1676), so
+AROMA's 0.219 corresponds to N $\approx$ 40.
+
+\subsection{92.1\% stratified re-computation (embodied E2)}
+
+The embodied card looked blocked on ``real-robot access''. But its pre-registered
+criterion---is the 92.1\% aggregate a few-scenario high mean, and is the tail
+stable?---is decidable from ACE-CaP-0's published Table~1 alone~\cite{acecap0}.
+The design is balanced: eight scenarios at 30 trials each, so weighted equals
+unweighted at 0.9208. The leave-one-out range is 2.38pp; the lowest scenario
+(Bread Packing, 83.3\%) has a Wilson CI [66.4\%, 92.7\%] that covers the overall
+rate; the between-scenario variance over pure binomial noise ratio is 1.04; and
+$\chi^2(7) = 7.259$, p = 0.402, meaning scenario differences are consistent with
+binomial sampling noise. The 92.1\% is a flat result, not a mean inflated by a few
+strong scenarios. The honest boundary is that this uses only Table~1 aggregate
+numbers with no per-trial series, so between-scenario variance is computable but
+within-scenario variance is not; with n = 30, ``tail not significantly deviant''
+is a low-power non-result, not proof of stability; and it is an arithmetic
+consistency check, not a physical reproduction. The GR00T2 closed-loop
+experiment (a different, more ambitious test) still awaits artifact release but
+does not block this card's own criterion.

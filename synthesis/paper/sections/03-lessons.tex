@@ -1,0 +1,64 @@
+\section{Reusable Lessons}
+\label{sec:lessons}
+
+The eight diagnostics converge on a small set of portable lessons. We state them
+as design rules, each tied to the apparatus failure that motivated it.
+
+\begin{enumerate}
+  \item \textbf{Every criterion must carry its own counter-evidence.} A criterion
+  that cannot turn red is decoration. Across the eight, the failure modes that
+  produced fake-green verdicts were a quantization floor (NSP slope), a
+  mis-aligned evaluation arm (multi-view), a template shortcut (DoM probe), a
+  cancellation artifact from a correlation that was true for all late steps
+  (termination lag), a ``nan'' returned by a non-central-$t$ CDF for large
+  non-centrality (workflow power), a reversed criterion direction (1.9x), and a
+  slow run that disagreed with a published table because a caliber parameter was
+  wrong (AROMA). Each was caught only because we injected a known violation and
+  required a red verdict.
+
+  \item \textbf{Fix the criterion before the run, then let it fail.} The NSP
+  three-arm is the clearest case: the pre-registered ``lowest slope'' criterion
+  failed, and we reported that rather than swapping in the secondary finding as
+  the headline. The secondary finding (lowest absolute error) is stated as a
+  secondary finding, with the reason the slope criterion is unreliable on stable
+  dynamics.
+
+  \item \textbf{Diagnose apparatus defects before changing them.} Each of the
+  fixes above was preceded by a concrete diagnosis (the quantization floor, the
+  mis-aligned arm, the nan branch), not by a tweak that made the number look
+  better. Where we changed a prior from 0.75 to 0.95 in the dynamics, it was a
+  physical argument---a strongly stable system attenuates error so much that the
+  arms become indistinguishable---made before observing the result, not after.
+
+  \item \textbf{``Substrate unavailable'' is not the same as ``no conclusion''.}
+  Power analysis converts ``cannot measure'' into ``MDE = 0.234, R = 16 would
+  suffice''; arithmetic self-check converts ``not auditable'' into ``the feasible
+  interval excludes the headline''; null geometry converts ``method paradox''
+  into ``r $\ll$ d arithmetic''; stratified re-computation converts a
+  ``real-robot experiment'' mean into a distributional question answerable from
+  a published table. The four unavailable-substrate cards produced four citable
+  quantitative statements, not four shrugs.
+
+  \item \textbf{Conclusion scope is fixed by the apparatus, not the model.}
+  This is the paper's central claim. The same nominal quantity (0.66) means
+  three different things across the embodied literature (a sim-to-real
+  reproduction rate, a parts Jaccard index, and an AUC with p = 0.014); 3.1\% and
+  $-$7.9\% belong to two different models and cannot be merged into an interval;
+  1.9x and 9.3x are different calibers and cannot be ranked. Every number must
+  travel with its ruler.
+
+  \item \textbf{Negative and non-result verdicts are first-class.} Four of the
+  eight diagnostics return a failed criterion, a mixed result, a cannot-judge,
+  or a not-identifiable verdict. We count these as results because they bound
+  what can be claimed, and because silently converting them into positive
+  findings is exactly the narrative-to-evidence error this paper targets.
+\end{enumerate}
+
+Together these rules operationalize the three engineering principles that emerge
+from the six directions: \emph{verifiable state prediction} (supervision anchored
+to physical or experimental quantities), \emph{auditable failure modes}
+(evaluation decomposed to specific failures with variance or intervals), and
+\emph{offline generation plus verification} (execution decoupled from checking so
+failures can be replayed). Each principle is an instance of the same discipline
+the eight diagnostics enact: make the claim checkable, make the check falsifiable,
+and state what the check does not cover.

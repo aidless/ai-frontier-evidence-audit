@@ -1,0 +1,150 @@
+{
+  "schema": 2,
+  "project": {
+    "id": "fm-efficiency",
+    "title": "基础模型与工程效率：可复现的净增益",
+    "domain": "ai/foundation-models",
+    "created": "2026-11-19T14:05:43.000Z",
+    "status": "active"
+  },
+  "question": {
+    "text": "基础模型工程效率提升（免训练上下文扩展、冻结模型控制、递归自我改进、系统协同）中，哪些是可复现的净增益，哪些只是 benchmark 自报？",
+    "updatedAt": "2026-11-19T14:05:43.000Z"
+  },
+  "hypotheses": [
+    {
+      "id": "H1",
+      "text": "免训练上下文扩展对 diffusion LLM 有效，但收益随任务长度与分布外程度衰减（PPL 19.51→3.12 属特定设置）。",
+      "status": "proposed",
+      "experiments": [
+        "E1-context-extension-headtohead"
+      ],
+      "reviews": [],
+      "updatedAt": "2026-11-19T14:12:25.000Z"
+    },
+    {
+      "id": "H2",
+      "text": "冻结 VLM 的表示控制（AROMA）收益集中在 exact-count 类任务，泛化到其他任务与更大模型尚未证实。",
+      "status": "supported_geometry",
+      "experiments": [
+        "E2-interpretation-vs-energy"
+      ],
+      "reviews": [],
+      "updatedAt": "2026-11-21T20:20:00.000Z",
+      "note": "几何层面支持：所有冻结方向方法在低秩子空间下都会出现「高解释力+低能量占比」；AROMA 的计数增益(+8.00pp)未重测，不作为本卡结论。"
+    },
+    {
+      "id": "H3",
+      "text": "RSI 在代码/基础设施优化上已有可测增益，但「长期稳定的递归提升」未被证明。",
+      "status": "proposed",
+      "experiments": [],
+      "reviews": [],
+      "updatedAt": "2026-11-19T14:05:43.000Z"
+    }
+  ],
+  "loop": {
+    "phase": "analysis",
+    "iteration": 4,
+    "history": [
+      {
+        "iteration": 0,
+        "phase": "scoping",
+        "action": "init",
+        "detail": "基础模型工程效率提升（免训练上下文扩展、冻结模型控制、递归自我改进、系统协同）中，哪些是可复现的净增益，哪些只是 benchmark 自报？",
+        "at": "2026-11-19T14:05:43.000Z"
+      },
+      {
+        "iteration": 0,
+        "phase": "scoping",
+        "action": "add-first-experiments",
+        "detail": "added 2 planned experiments from evidence baseline v1",
+        "at": "2026-11-19T14:12:25.000Z"
+      },
+      {
+        "iteration": 1,
+        "phase": "analysis",
+        "action": "e1-comparability-gate",
+        "detail": "三路线两两不可比，无需花机时对表；selftest 通过（同配置可比、改评测集不可比）。",
+        "at": "2026-11-19T16:05:00.000Z"
+      },
+      {
+        "iteration": 2,
+        "phase": "analysis",
+        "action": "e1-fulltext-exhaustion",
+        "detail": "curl 三篇 HTML 全文（2506.14429v3=303886B、2610.42084v1=463838B），确认 LongLLaDA 无 8192 PPL、RangeSWA 用 ELF-B/M/L 非 LLaDA；E1 升为 CONFIRMED_NOT_ANSWERABLE，出路改为架构对照。",
+        "at": "2026-11-20T01:57:37.000Z"
+      },
+      {
+        "iteration": 3,
+        "phase": "analysis",
+        "action": "gpu-smoke-verdict-update",
+        "detail": "2026-11-20 实测本机 RTX 3060 Laptop 6GB CUDA 可用（bf16 19.76 TFLOPS），被 ollama 常驻占用后仅剩 ~1GB；4 张 GPU 型卡 verdict 更新为\"显存不足不可行/需腾显存或云 GPU\"。证据：trustworthy-ai/evidence/2026-11-20-gpu-smoke.txt",
+        "at": "2026-11-20T02:35:00.000Z"
+      },
+      {
+        "iteration": 4,
+        "phase": "analysis",
+        "action": "e2-geometry-diagnostic",
+        "detail": "单位置几何诊断（非复现）：零模型 C1-C4 全 true → GEOMETRY_GENERIC；E≈r/d，corr(A,E)≈0。",
+        "at": "2026-11-21T20:20:00.000Z"
+      }
+    ]
+  },
+  "experiments": [
+    {
+      "id": "E1-context-extension-headtohead",
+      "title": "LongLLaDA / MPPA / RangeSWA 同 base、同评测、同预算下的三方对表",
+      "hypothesis": "H1",
+      "status": "blocked",
+      "created": "2026-11-19T14:12:25.000Z",
+      "updatedAt": "2026-11-20T01:57:37.000Z",
+      "reviews": [],
+      "verdict": "三篇全文已穷举核验（curl HTML 200）：LongLLaDA v3 正文无 8192-token PPL 数值（PPL 只在 Figure 1 曲线；Table1/2 是 LongBench/RULER/NIAH）→ LongLLaDA↔MPPA 也不可比。升级为 CONFIRMED_NOT_ANSWERABLE。三路线 base 各异（LLaDA-8B / LLaDA-8B / ELF-B/M-L），评测口径全不同。出路=改写为「同 base 架构对照」：LLaDA 离散扩散 vs ELF 连续扩散在同一长文本生成任务比 Gen.PPL+重复率。",
+      "artifacts": [
+        "fm-efficiency/analyses/comparability_matrix.py",
+        "fm-efficiency/evidence/2026-11-19-comparability-matrix.txt"
+      ]
+    },
+    {
+      "id": "E2-interpretation-vs-energy",
+      "title": "AROMA 悖论复算：解释力 89.82% 与激活能量 9.52% 的分离是否普适于冻结方向方法",
+      "hypothesis": "H2",
+      "status": "completed",
+      "created": "2026-11-19T14:12:25.000Z",
+      "updatedAt": "2026-11-21T20:20:00.000Z",
+      "reviews": [],
+      "verdict": "图形几何诊断完成（非 AROMA 复现）：零模型下 A-E 分离结构性成立（C1-C4 全 true，GEOMETRY_GENERIC）；E≈r/d=3.125%（理论 Beta 中位 2.63%），corr(A,E)=0.011，A_null 99th=0.220 对表 AROMA 0.219。结论：89.82% vs 9.52% 的分离是 r≪d 的低秩几何常态，非方法特有缺陷。",
+      "artifacts": [
+        "see trustworthy-ai/evidence/2026-11-20-gpu-smoke.txt"
+      ]
+    }
+  ],
+  "artifacts": [
+    {
+      "name": "evidence-baseline",
+      "latestVersion": "v1",
+      "updatedAt": "2026-11-19T14:05:43.000Z",
+      "description": "基础模型效率证据基线（上下文扩展、表示控制、RSI），见 evidence/2026-11-19-baseline.md"
+    },
+    {
+      "name": "manuscript-draft",
+      "latestVersion": "v1",
+      "updatedAt": "2026-11-20T03:12:50.000Z",
+      "description": "证据驱动技术报告初稿（6 份 draft.md 之一），见 manuscript/draft.md"
+    },
+    {
+      "name": "comparability-matrix",
+      "latestVersion": "v1",
+      "updatedAt": "2026-11-20T03:13:25.000Z",
+      "description": "三路线可比性判定，见 evidence/2026-11-19-comparability-matrix.txt"
+    },
+    {
+      "name": "sensitivity-energy-geometry",
+      "latestVersion": "v1",
+      "updatedAt": "2026-11-21T20:20:00.000Z",
+      "description": "fm E2 结构几何诊断脚本与 full 结果，见 analyses/sensitivity_energy_geometry.py + evidence/2026-11-21-sensitivity-energy-geometry.md"
+    }
+  ],
+  "reviews": [],
+  "updatedAt": "2026-11-21T20:20:00.000Z"
+}
